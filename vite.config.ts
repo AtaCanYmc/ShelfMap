@@ -13,9 +13,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'shelfmap-icon.svg'],
       manifest: {
-        name: 'ShelfMap - Akıllı Atölye & Depolama',
+        name: 'ShelfMap - Smart Workshop & Storage Map',
         short_name: 'ShelfMap',
-        description: 'Elektronik, alet ve parçalar için hiyerarşik kutu ve raf haritası',
+        description: 'Hierarchical container and inventory map for electronic components, tools, and hardware',
         theme_color: '#090d16',
         background_color: '#090d16',
         display: 'standalone',

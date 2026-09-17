@@ -1,138 +1,187 @@
-# ShelfMap 🗄️⚡
+# ShelfMap
 
-> **Atölye ve Ev Eşyaları İçin Hiyerarşik Konteyner Haritası & Akıllı Envanter Takibi**  
-> *Bring Your Own Supabase (BYOS) • PWA • QR Kod Entegrasyonu • Görsel Destekli Envanter*
+[![Deploy ShelfMap to GitHub Pages](https://github.com/atacan/ShelfMap/actions/workflows/deploy.yml/badge.svg)](https://github.com/atacan/ShelfMap/actions/workflows/deploy.yml)
+[![Release Please](https://github.com/atacan/ShelfMap/actions/workflows/release-please.yml/badge.svg)](https://github.com/atacan/ShelfMap/actions/workflows/release-please.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Evdeki elektronik parçaları, ESP modellerini, sensörleri, el aletlerini ve vidaları ararken kaybolmaya son! **ShelfMap**, fiziksel saklama alanlarınızı (Odalar → Dolaplar → Çekmeceler → Alet Kutuları → Bölmeli Kutular) hiyerarşik olarak haritalayan ve eşyalarınızın tam konumunu anında gösteren modern bir Progressive Web App (PWA)'dir.
-
----
-
-## ✨ Temel Özellikler
-
-1. **İç İçe Konteyner Hiyerarşisi (Self-Referencing Nesting)**:
-   - Sınırsız derinlikte hiyerarşik saklama mimarisi (`Oda > Dolap > 2. Çekmece > Mavi Kutu`).
-   - Döngüsel hataları (cycle detection) engelleyen akıllı taşıma sistemi.
-   - Her seviyede ekmek kırıntısı (**Breadcrumb**) navigasyonu.
-
-2. **Bring Your Own Supabase (BYOS)**:
-   - **Sıfır Sunucu Maliyeti & Tam Veri Mahremiyeti**: Verileriniz geliştiricinin sunucusunda değil, kendi ücretsiz Supabase hesabınızda durur.
-   - Uygulama içinden tek tıkla SQL kurulum scripti kopyalama.
-   - Supabase bağlantısı olmadan da anında denemek için dahili **Yerel Demo Modu** (LocalStorage).
-
-3. **Görsel Odaklı Envanter (Fotoğraf & Kamera Desteği)**:
-   - Kutuların dıştan fotoğrafı ve eşyaların yakından görseli ile görsel hafızayı devreye sokun.
-   - PWA kamera entegrasyonu (`capture="environment"`).
-   - **İstemci Taraflı Yerel Sıkıştırma (Native Canvas Compression)**: 10-15MB'lık telefon fotoğraflarını yüklemeden önce tarayıcıda ~150KB'a optimize eder.
-
-4. **Fiziksel QR Kod & Barkod Sistemi**:
-   - Her kutu veya çekmece için anında **yazdırılabilir QR etiketleri** üretin.
-   - Telefon kamerasıyla kutunun üzerindeki QR kodu taratarak doğrudan o kutunun içine gidin veya içine hızlı eşya ekleyin.
-   - Web Audio API ile taranma geri bildirimi (bip sesi).
-
-5. **Anlık ve Konum Yollu Arama (Full Path Search)**:
-   - Parça, kategori veya not bazlı canlı arama.
-   - Arama sonuçlarında eşyanın sadece adı değil, `Atölye > Sağ Dolap > 2. Çekmece > Mavi Kutu` şeklinde **tam konum yolu** görüntülenir.
-
-6. **PWA (Progressive Web App)**:
-   - Mobilde ana ekrana eklenebilir, tam ekran yerel uygulama gibi çalışır.
-   - Service Worker ve offline önbellekleme desteği.
+Hierarchical workshop and home storage mapping Progressive Web App (PWA) built for makers, electronics hobbyists, and developers. Organizes parts, boards, tools, and hardware across nested physical containers using a Bring-Your-Own-Supabase (BYOS) architecture, printable QR code labels, and live camera scanning.
 
 ---
 
-## 🚀 Hızlı Başlangıç
+## Table of Contents
 
-### Gereksinimler
-- Node.js 18+ ve npm
+- [Overview](#overview)
+- [Architecture & Data Flow](#architecture--data-flow)
+- [Key Features](#key-features)
+- [Quick Start](#quick-start)
+- [Supabase Setup (BYOS)](#supabase-setup-byos)
+- [Deployment](#deployment)
+  - [GitHub Pages](#github-pages)
+  - [Vercel](#vercel)
+- [Automation & Governance](#automation--governance)
+- [Testing & Verification](#testing--verification)
+- [License](#license)
 
-### Kurulum ve Çalıştırma
+---
+
+## Overview
+
+Finding specific microcontrollers (e.g. ESP32, RP2040), sensors, hand tools, and mechanical fasteners across workshops, desks, drawers, and compartment boxes is a frequent bottleneck. 
+
+ShelfMap solves this by modeling physical storage spaces as an arbitrary-depth self-referential tree:
+
+```
+Room / Lab ──> Storage Cabinet ──> Drawer 2 ──> Blue Tool Bag ──> Part
+```
+
+Every search result displays the exact hierarchical path from the root room down to the containing compartment.
+
+---
+
+## Architecture & Data Flow
+
+```mermaid
+flowchart TD
+    subgraph Client["Client Application (PWA)"]
+        UI["React 19 + Tailwind CSS UI"]
+        Scanner["Camera QR Scanner (html5-qrcode)"]
+        Compressor["Native Canvas Image Compressor"]
+        SW["Service Worker (Offline Cache)"]
+    end
+
+    subgraph StorageEngine["Storage & Data Engine"]
+        LS["Local Storage (Offline Demo Mode)"]
+        ClientFactory["Dynamic Supabase Client (BYOS)"]
+    end
+
+    subgraph RemoteBackend["User's Own Supabase Instance"]
+        PG[("PostgreSQL\ncontainers & items")]
+        S3["Storage Bucket\nworkshop-images"]
+    end
+
+    UI --> Scanner
+    UI --> Compressor
+    UI --> StorageEngine
+    StorageEngine -->|Configured| ClientFactory
+    StorageEngine -->|Unconfigured / Demo| LS
+    ClientFactory -->|Database Queries| PG
+    Compressor -->|Compressed JPEGs| S3
+```
+
+---
+
+## Key Features
+
+- **Arbitrary Container Nesting**: Self-referencing tree model (`parent_id` foreign key) supports infinite nesting depths (Rooms, Cabinets, Drawers, Toolboxes, Organizers).
+- **Cycle-Detection Engine**: Movement logic verifies target destinations to prevent circular hierarchy loops (`wouldCreateCycle`).
+- **Bring-Your-Own-Supabase (BYOS)**: Complete data sovereignty with zero hosting fees. Keys are stored locally in the user's browser, communicating directly with their own Supabase project.
+- **Offline / Local Demo Mode**: Instant onboarding without requiring database configuration. Ships with pre-loaded mock maker inventory.
+- **Client-Side Image Compression**: Compresses 10–15 MB camera images down to ~150 KB JPEG files directly inside the browser using the native HTML5 Canvas API prior to upload.
+- **Physical QR Code Generator & Scanner**:
+  - Generates high-contrast QR labels formatted for adhesive sticker printing (`@media print`).
+  - Scans QR labels with real-time autofocus via mobile back cameras (`facingMode: "environment"`).
+  - Emits audio feedback via Web Audio API and navigates directly into the target box or initiates item creation.
+- **Instant Full-Path Search**: Real-time debounced queries return matched items alongside their breadcrumb chain (e.g. `Workshop & Lab > Right Metal Cabinet > Drawer 2 (Microcontrollers)`).
+- **Progressive Web App (PWA)**: Installable on iOS and Android home screens with standalone display and offline asset precaching.
+
+---
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 20+ and npm
+
+### Local Development
+
 ```bash
-# Bağımlılıkları yükleyin
+# Clone the repository
+git clone https://github.com/atacan/ShelfMap.git
+cd ShelfMap
+
+# Install dependencies
 npm install
 
-# Geliştirme sunucusunu başlatın
+# Start the Vite development server
 npm run dev
 ```
 
-Tarayıcınızda `http://localhost:5173` adresine giderek ShelfMap'i anında kullanmaya başlayabilirsiniz. İlk açılışta hazır örnek Maker verileri (ESP32, TS100 Havya, Dijital Kumpas, M3 Vidalar vb.) otomatik olarak yüklenecektir.
+Open `http://localhost:5173` in your browser. ShelfMap launches immediately in Local Demo Mode populated with sample microcontrollers, tools, and hardware.
 
 ---
 
-## 🗄️ Supabase Kurulum Rehberi (BYOS)
+## Supabase Setup (BYOS)
 
-ShelfMap'i kendi bulut veritabanınıza bağlamak için:
+To link ShelfMap to your personal cloud backend:
 
-1. [Supabase](https://supabase.com) üzerinde ücretsiz yeni bir proje oluşturun.
-2. ShelfMap uygulamasında sağ üstteki **Ayarlar (Dişli)** butonuna tıklayın ve **SQL Kurulum Kodu** sekmesine geçin.
-3. **SQL'i Kopyala** butonuna basın.
-4. Supabase panelinizde sol menüdeki **SQL Editor** kısmına gidin, kodu yapıştırın ve **Run** butonuna basın:
-   - `containers` ve `items` tabloları,
-   - İndeksler ve RLS politikaları,
-   - `workshop-images` public storage bucket'ı otomatik olarak oluşturulacaktır.
-5. Supabase Dashboard -> **Project Settings -> API** bölümünden:
-   - **Project URL**
-   - **anon / public key**
-   bilgilerini kopyalayın ve ShelfMap Ayarlar ekranına girip **Kaydet**'e basın.
-
-Artık tüm atölye envanteriniz kendi Supabase veritabanınızda güvenle saklanır!
+1. Create a free project at [Supabase](https://supabase.com).
+2. Inside ShelfMap, click the **Settings (Gear)** icon in the top navigation bar and select the **SQL Setup** tab.
+3. Click **Copy SQL**.
+4. In your Supabase Dashboard, navigate to **SQL Editor**, paste the copied script, and click **Run**:
+   - Creates the `containers` and `items` tables with cascade relations.
+   - Configures performance indexes and Row Level Security (RLS) policies.
+   - Creates the public `workshop-images` storage bucket.
+5. In your Supabase Dashboard, navigate to **Project Settings > API**:
+   - Copy **Project URL**.
+   - Copy **anon / public key**.
+6. Paste these credentials into the ShelfMap **Settings** modal and click **Save Settings**.
 
 ---
 
-## 🧪 Testler ve Doğrulama
+## Deployment
 
-Temel hiyerarşik yol çözümleyici (Breadcrumb path), döngü tespiti (cycle detection) ve arama motoru testlerini çalıştırmak için:
+### GitHub Pages
 
-```bash
-npm run test:core   # veya: npx tsx src/services/db.test.ts
-npm run build       # Üretim derlemesi ve TypeScript doğrulaması
-```
+This repository includes an automated GitHub Pages deployment workflow (`.github/workflows/deploy.yml`).
 
----
+1. In your GitHub repository settings, go to **Settings > Pages**.
+2. Under **Build and deployment > Source**, select **GitHub Actions**.
+3. Push to `main` or trigger the workflow manually from the **Actions** tab.
 
-## 🛠️ CI/CD, Otomasyon & Kalite Güvencesi
+The Vite build uses `base: './'` to guarantee asset paths resolve across GitHub Pages sub-paths (`https://<username>.github.io/<repo>/`).
 
-Projede modern açık kaynak DevOps standartları yapılandırılmıştır:
+### Vercel
 
-1. **GitHub Pages CI/CD** (`.github/workflows/deploy.yml`):
-   - `main` dalına yapılan her push'ta veya manuel tetiklemede testleri (`npm run test:core`) ve üretimi (`npm run build`) çalıştırır, PWA çıktısını GitHub Pages'e otomatik dağıtır.
-   - `vite.config.ts` içindeki `base: './'` ayarı sayesinde GitHub Pages alt yollarında (`/<repo-adı>/`) kırık link olmadan sorunsuz çalışır.
+The repository includes a production-ready `vercel.json` with Single Page Application (SPA) rewrites, PWA headers, and immutable asset caching.
 
-2. **Dependabot** (`.github/dependabot.yml`):
-   - Hem `npm` bağımlılıklarını hem de `github-actions` versiyonlarını haftalık olarak denetler ve otomatik güncelleme PR'ları açar.
-
-3. **Release Please** (`.github/workflows/release-please.yml`, `release-please-config.json`):
-   - [Conventional Commits](https://www.conventionalcommits.org/) formatındaki commit'leri takip eder.
-   - Otomatik Changelog oluşturur, sürüm yükseltir (`package.json` ve tag) ve GitHub Release yayınlar.
-
-4. **Husky Pre-commit Kontrolleri** (`.husky/pre-commit`):
-   - Her `git commit` öncesinde çekirdek algoritma testlerini ve TypeScript derlemesini otomatik çalıştırır. Hatalı kodların repoya commit edilmesini engeller.
-
-5. **Vercel Deployment** (`vercel.json`):
-   - SPA URL yönlendirmeleri (`rewrites`), PWA Service Worker için önbellek kontrol başlıkları (`sw.js` revalidation) ve statik asset optimizasyonu (`immutable cache`) yapılandırılmıştır.
-
----
-
-## ⚡ Vercel ile Canlıya Alma
-
-ShelfMap'i Vercel üzerinde tek tıkla veya CLI ile sıfır konfigürasyonla yayınlayabilirsiniz:
-
-### Yöntem 1: Vercel Dashboard
-1. Projenizi GitHub'a push'layın.
-2. [Vercel Dashboard](https://vercel.com/new) üzerinden repoyu seçip import edin.
-3. Ayarlar otomatik algılanır:
+#### Option 1: Vercel Dashboard
+1. Import your GitHub repository into [Vercel](https://vercel.com/new).
+2. The project settings are detected automatically:
    - **Framework Preset**: Vite
    - **Build Command**: `npm run build`
    - **Output Directory**: `dist`
-4. **Deploy** butonuna basın!
+3. Click **Deploy**.
 
-### Yöntem 2: Vercel CLI
+#### Option 2: Vercel CLI
 ```bash
-# Vercel CLI ile hızlı dağıtım
 npx vercel --prod
 ```
 
-Projedeki [vercel.json](file:///Users/atacan/WebstormProjects/ShelfMap/vercel.json) dosyası PWA Service Worker (`sw.js`), Web App Manifest ve SPA router başlıklarını otomatik yönetir.
+---
+
+## Automation & Governance
+
+- **CI/CD Pipeline** (`.github/workflows/deploy.yml`): Runs automated unit tests (`npm run test:core`) and production compilation (`npm run build`) before deploying to GitHub Pages.
+- **Dependabot** (`.github/dependabot.yml`): Automates weekly security scans and pull requests for both `npm` packages and `github-actions`.
+- **Release Please** (`.github/workflows/release-please.yml`): Automates version bumping, `CHANGELOG.md` generation, and GitHub Releases based on [Conventional Commits](https://www.conventionalcommits.org/).
+- **Husky Pre-Commit Hooks** (`.husky/pre-commit`): Executes tree traversal verification tests and type-checking before every `git commit`.
 
 ---
 
-## 📦 Lisans
-MIT License.
+## Testing & Verification
+
+Run the standalone core verification test suite:
+
+```bash
+# Run core logic tests (path resolution, cycle prevention, QR matching)
+npm run test:core
+
+# Run TypeScript check and production bundle compilation
+npm run build
+```
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).

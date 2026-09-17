@@ -12,13 +12,13 @@ console.log('Running ShelfMap core logic tests...')
 // 1. Test getContainerPath
 const drawerPath = getContainerPath('drawer-2', INITIAL_MOCK_CONTAINERS)
 assert.strictEqual(drawerPath.length, 3, 'Drawer path should have 3 levels')
-assert.strictEqual(drawerPath[0].name, 'Atölye & Çalışma Odası')
-assert.strictEqual(drawerPath[1].name, 'Sağ Metal Dolap')
-assert.strictEqual(drawerPath[2].name, '2. Çekmece (Mikrodenetleyiciler)')
+assert.strictEqual(drawerPath[0].name, 'Workshop & Lab')
+assert.strictEqual(drawerPath[1].name, 'Right Metal Cabinet')
+assert.strictEqual(drawerPath[2].name, 'Drawer 2 (Microcontrollers)')
 
 const rootPath = getContainerPath('room-workshop', INITIAL_MOCK_CONTAINERS)
 assert.strictEqual(rootPath.length, 1)
-assert.strictEqual(rootPath[0].name, 'Atölye & Çalışma Odası')
+assert.strictEqual(rootPath[0].name, 'Workshop & Lab')
 
 const nullPath = getContainerPath(null, INITIAL_MOCK_CONTAINERS)
 assert.strictEqual(nullPath.length, 0)
@@ -43,7 +43,7 @@ assert.strictEqual(searchResult.matchedItems[0].item.name, 'ESP32 NodeMCU CP2102
 assert.strictEqual(searchResult.matchedItems[0].path.length, 3)
 assert.strictEqual(
   searchResult.matchedItems[0].path.map((p) => p.name).join(' > '),
-  'Atölye & Çalışma Odası > Sağ Metal Dolap > 2. Çekmece (Mikrodenetleyiciler)'
+  'Workshop & Lab > Right Metal Cabinet > Drawer 2 (Microcontrollers)'
 )
 
 // 4. Test QR Code matching

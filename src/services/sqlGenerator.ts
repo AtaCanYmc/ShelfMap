@@ -1,9 +1,9 @@
 export const SUPABASE_SETUP_SQL = `-- ==========================================
--- ShelfMap: Supabase Veritabanı & Depolama Kurulum Scripti
--- Bu kodu Supabase Dashboard -> SQL Editor kısmına yapıştırıp "Run" butonuna basın.
+-- ShelfMap: Supabase Database & Storage Setup Script
+-- Paste this script into your Supabase Dashboard -> SQL Editor and click "Run".
 -- ==========================================
 
--- 1. containers (Konteyner / Lokasyon) Tablosu
+-- 1. containers (Location / Storage Units) Table
 create table if not exists public.containers (
   id uuid primary key default gen_random_uuid(),
   user_id uuid default auth.uid(),
@@ -15,12 +15,12 @@ create table if not exists public.containers (
   created_at timestamptz default now()
 );
 
--- 2. items (Eşyalar / Parçalar) Tablosu
+-- 2. items (Parts / Tools / Components) Table
 create table if not exists public.items (
   id uuid primary key default gen_random_uuid(),
   user_id uuid default auth.uid(),
   name text not null,
-  category text default 'Genel',
+  category text default 'General',
   quantity integer default 1,
   container_id uuid references public.containers(id) on delete set null,
   image_url text,
@@ -28,17 +28,17 @@ create table if not exists public.items (
   created_at timestamptz default now()
 );
 
--- İndeksler (Hızlı arama ve hiyerarşi performansı için)
+-- Performance Indexes (Fast search and tree traversal)
 create index if not exists idx_containers_parent on public.containers(parent_id);
 create index if not exists idx_containers_qr on public.containers(qr_code);
 create index if not exists idx_items_container on public.items(container_id);
 create index if not exists idx_items_name on public.items using gin (to_tsvector('simple', name));
 
--- 3. Row Level Security (RLS) Ayarları
+-- 3. Row Level Security (RLS) Configuration
 alter table public.containers enable row level security;
 alter table public.items enable row level security;
 
--- Anonim / Giriş Yapmış Kullanıcı İzinleri (Atölye/Kişisel kullanım için tam yetki)
+-- Access Policies (Full access for personal / workshop workspace)
 drop policy if exists "containers_access" on public.containers;
 create policy "containers_access" on public.containers
   for all using (true) with check (true);
@@ -47,7 +47,7 @@ drop policy if exists "items_access" on public.items;
 create policy "items_access" on public.items
   for all using (true) with check (true);
 
--- 4. Storage (workshop-images) Bucket ve Politikaları
+-- 4. Storage (workshop-images) Bucket and Access Policies
 insert into storage.buckets (id, name, public)
 values ('workshop-images', 'workshop-images', true)
 on conflict (id) do nothing;
