@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="shelfGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="50%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+    <linearGradient id="boxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#090d16"/>
+  <!-- Outer rack frame -->
+  <rect x="72" y="72" width="368" height="368" rx="28" stroke="url(#shelfGrad)" stroke-width="18" fill="none"/>
+  <!-- Middle Shelf Divider -->
+  <path d="M72 256H440" stroke="url(#shelfGrad)" stroke-width="18" stroke-linecap="round"/>
+  <!-- Top Left Box -->
+  <rect x="108" y="112" width="128" height="112" rx="14" fill="url(#boxGrad)" stroke="#6366f1" stroke-width="6"/>
+  <!-- Top Right Box -->
+  <rect x="276" y="112" width="128" height="112" rx="14" fill="url(#boxGrad)" stroke="#38bdf8" stroke-width="6"/>
+  <!-- Bottom QR / Map Element -->
+  <rect x="108" y="292" width="296" height="112" rx="16" fill="url(#boxGrad)" stroke="#a855f7" stroke-width="6"/>
+  <!-- Stylized circuit / QR nodes -->
+  <circle cx="152" cy="348" r="16" fill="#38bdf8"/>
+  <circle cx="360" cy="348" r="16" fill="#a855f7"/>
+  <path d="M168 348H344" stroke="#6366f1" stroke-width="8" stroke-dasharray="8 8" stroke-linecap="round"/>
+  <circle cx="256" cy="348" r="22" fill="#6366f1"/>
+  <circle cx="256" cy="348" r="10" fill="#ffffff"/>
+  <!-- Indicator dots on boxes -->
+  <circle cx="172" cy="168" r="10" fill="#38bdf8"/>
+  <circle cx="340" cy="168" r="10" fill="#10b981"/>
+</svg>
