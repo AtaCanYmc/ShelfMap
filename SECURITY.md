@@ -2,19 +2,31 @@
 
 ## Supported Versions
 
-Security updates are provided for the latest active release on the `main` branch.
+Security patches are released for the current major release on the `main` branch.
 
 | Version | Supported |
-| --- | --- |
-| 0.0.x (Latest) | :white_check_mark: |
-| < 0.0.1 | :x: |
+| :--- | :---: |
+| `0.0.x` (Latest) | Yes |
+| `< 0.0.1` | No |
+
+---
 
 ## Reporting a Vulnerability
 
-If you discover a potential security vulnerability in ShelfMap, please disclose it responsibly rather than opening a public issue.
+If you discover a security issue or vulnerability in ShelfMap, do not open a public issue.
 
-1. Email the vulnerability report directly to the repository maintainer or submit a private security advisory via GitHub (**Security > Advisories > Report a vulnerability**).
-2. Include reproduction steps, potential impact, and suggested mitigation if available.
-3. You will receive an acknowledgment within 48 hours, followed by updates on the investigation and resolution timeline.
+Submit a private vulnerability report through GitHub Security Advisories:
+[https://github.com/AtaCanYmc/ShelfMap/security/advisories/new](https://github.com/AtaCanYmc/ShelfMap/security/advisories/new)
 
-Thank you for helping keep ShelfMap secure for the maker community.
+### Report Requirements
+
+Please include the following details:
+- Affected component or route.
+- Step-by-step reproduction instructions or proof-of-concept payload.
+- Assessment of potential impact (e.g. client data exfiltration, local storage tampering, cross-site scripting).
+
+### Response Timeline and SLA
+
+- **Initial Acknowledgment**: Within 48 hours.
+- **Triage and Impact Assessment**: Within 5 business days.
+- **Patch Release**: Addressed in the subsequent patch release along with credit in security advisory notes.
