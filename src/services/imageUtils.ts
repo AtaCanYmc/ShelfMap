@@ -47,10 +47,10 @@ export async function compressImage(
           quality
         )
       }
-      img.onerror = () => reject(new Error('Görsel yüklenemedi'))
+      img.onerror = () => reject(new Error('Image failed to load'))
       img.src = e.target?.result as string
     }
-    reader.onerror = () => reject(new Error('Dosya okunamadı'))
+    reader.onerror = () => reject(new Error('File could not be read'))
     reader.readAsDataURL(file)
   })
 }
@@ -59,7 +59,7 @@ export function blobToDataUrl(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => resolve(reader.result as string)
-    reader.onerror = () => reject(new Error('DataURL çevrilemedi'))
+    reader.onerror = () => reject(new Error('Failed to convert blob to DataURL'))
     reader.readAsDataURL(blob)
   })
 }

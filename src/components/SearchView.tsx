@@ -60,48 +60,48 @@ export const SearchView: FC<SearchViewProps> = ({
   const totalResults = matchedItems.length + (selectedCategory === 'all' ? matchedContainers.length : 0)
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md overflow-y-auto">
-      <div className="relative w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden my-6">
+    <div className="fixed inset-0 z-50 flex items-start justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md overflow-y-auto">
+      <div className="relative w-full max-w-2xl bg-[#11151f] border border-[#232a3c] rounded-xl shadow-2xl overflow-hidden my-6">
         {/* Search Input Bar */}
-        <div className="p-4 border-b border-slate-800 flex items-center gap-3 bg-slate-950/80">
-          <Search className="w-5 h-5 text-indigo-400 shrink-0" />
+        <div className="p-4 border-b border-[#232a3c] flex items-center gap-3 bg-[#0c0f14]">
+          <Search className="w-5 h-5 text-amber-400 shrink-0" />
           <input
             type="text"
             autoFocus
-            placeholder="Parça, sensör, vida, kumpas veya kutu adı yazın..."
+            placeholder="Search parts, ICs, sensors, screws, or containers..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="flex-1 bg-transparent border-none text-slate-100 placeholder-slate-500 text-sm sm:text-base outline-none focus:ring-0"
+            className="flex-1 bg-transparent border-none text-slate-100 placeholder-slate-500 text-sm font-mono outline-none focus:ring-0"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="p-1 rounded text-slate-400 hover:text-white hover:bg-[#1a2234] transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
           )}
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors text-xs font-medium"
+            className="px-2.5 py-1 rounded bg-[#1a2234] hover:bg-[#232d45] text-slate-300 text-xs font-mono transition-colors"
           >
-            Kapat
+            ESC
           </button>
         </div>
 
         {/* Category Pills */}
-        <div className="flex items-center gap-1.5 px-4 py-2.5 overflow-x-auto border-b border-slate-800/80 scrollbar-none bg-slate-900">
+        <div className="flex items-center gap-1.5 px-4 py-2.5 overflow-x-auto border-b border-[#232a3c] scrollbar-none bg-[#0e121b]">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`text-xs px-2.5 py-1 rounded-full whitespace-nowrap transition-colors ${
+              className={`text-[11px] font-mono uppercase px-2.5 py-1 rounded border transition-colors ${
                 selectedCategory === cat
-                  ? 'bg-indigo-600 text-white font-medium'
-                  : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                  ? 'bg-amber-500/15 border-amber-500/80 text-amber-300 font-semibold'
+                  : 'bg-[#141a29] border-[#232d42] text-slate-400 hover:text-slate-200'
               }`}
             >
-              {cat === 'all' ? 'Tüm Kategoriler' : cat}
+              {cat === 'all' ? 'All Categories' : cat}
             </button>
           ))}
         </div>
@@ -109,24 +109,24 @@ export const SearchView: FC<SearchViewProps> = ({
         {/* Results List */}
         <div className="max-h-[60vh] overflow-y-auto p-4 space-y-4">
           {!query.trim() ? (
-            <div className="py-12 text-center text-slate-500 text-xs">
-              <Search className="w-8 h-8 mx-auto text-slate-700 mb-2 stroke-[1.5]" />
-              Aramak istediğiniz parça veya kutunun adını yukarıya yazın.
+            <div className="py-12 text-center text-slate-500 text-xs font-mono">
+              <Search className="w-7 h-7 mx-auto text-slate-700 mb-2 stroke-[1.5]" />
+              Type part name, specification, or container to search index.
               <br />
-              Örn: <span className="text-indigo-400">ESP32</span>, <span className="text-indigo-400">Kumpas</span>, <span className="text-indigo-400">M3</span>
+              Examples: <span className="text-amber-400 font-semibold">ESP32</span>, <span className="text-amber-400 font-semibold">Caliper</span>, <span className="text-amber-400 font-semibold">M3</span>
             </div>
           ) : totalResults === 0 ? (
-            <div className="py-12 text-center text-slate-500 text-xs">
-              <Box className="w-8 h-8 mx-auto text-slate-700 mb-2 stroke-[1.5]" />
-              "{query}" ile eşleşen bir eşya veya konteyner bulunamadı.
+            <div className="py-12 text-center text-slate-500 text-xs font-mono">
+              <Box className="w-7 h-7 mx-auto text-slate-700 mb-2 stroke-[1.5]" />
+              No items or containers match: "{query}"
             </div>
           ) : (
             <>
               {/* Items Section */}
               {matchedItems.length > 0 && (
                 <div className="space-y-2">
-                  <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-1">
-                    Eşyalar & Parçalar ({matchedItems.length})
+                  <div className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest px-1">
+                    Items & Parts ({matchedItems.length})
                   </div>
                   {matchedItems.map(({ item, path, containerName }) => {
                     const badge = getCategoryBadge(item.category)
@@ -136,11 +136,11 @@ export const SearchView: FC<SearchViewProps> = ({
                       <div
                         key={item.id}
                         onClick={() => handleSelect(item.container_id)}
-                        className="group p-3 rounded-xl bg-slate-950/70 border border-slate-800/80 hover:border-indigo-600/50 hover:bg-slate-800/40 cursor-pointer transition-all flex items-center justify-between gap-3"
+                        className="group p-3 rounded-lg bg-[#0c0f14] border border-[#232a3c] hover:border-amber-500/60 hover:bg-[#141b2b] cursor-pointer transition-all flex items-center justify-between gap-3"
                       >
                         <div className="flex items-center gap-3 min-w-0">
                           {/* Image / Icon */}
-                          <div className="w-11 h-11 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center shrink-0 overflow-hidden">
+                          <div className="w-10 h-10 rounded bg-[#11151f] border border-[#232a3c] flex items-center justify-center shrink-0 overflow-hidden">
                             {item.image_url ? (
                               <img
                                 src={item.image_url}
@@ -148,29 +148,29 @@ export const SearchView: FC<SearchViewProps> = ({
                                 className="w-full h-full object-cover"
                               />
                             ) : (
-                              <IconComponent className="w-5 h-5 text-slate-600" />
+                              <IconComponent className="w-4 h-4 text-slate-500" />
                             )}
                           </div>
 
                           {/* Info & Path */}
                           <div className="min-w-0">
                             <div className="flex items-center gap-2 mb-0.5">
-                              <h5 className="font-semibold text-slate-100 text-sm group-hover:text-indigo-400 transition-colors truncate">
+                              <h5 className="font-semibold text-slate-100 text-sm group-hover:text-amber-400 transition-colors truncate">
                                 {item.name}
                               </h5>
                               <span
-                                className={`text-[10px] px-1.5 py-0.2 rounded border font-medium ${badge.classes}`}
+                                className={`text-[10px] font-mono px-1.5 py-0.2 rounded border font-semibold ${badge.classes}`}
                               >
                                 {item.category}
                               </span>
-                              <span className="text-[11px] font-mono text-slate-400">
+                              <span className="text-[11px] font-mono tabular-nums text-slate-400">
                                 ×{item.quantity}
                               </span>
                             </div>
 
                             {/* Full Breadcrumb Path */}
-                            <div className="flex items-center gap-1 text-xs text-slate-400 truncate">
-                              <span className="text-slate-500 font-medium">Konum:</span>
+                            <div className="flex items-center gap-1 text-xs font-mono text-slate-400 truncate">
+                              <span className="text-slate-500 font-semibold uppercase text-[10px]">Location:</span>
                               {path.length === 0 ? (
                                 <span className="text-slate-400 italic">
                                   {containerName}
@@ -184,7 +184,7 @@ export const SearchView: FC<SearchViewProps> = ({
                                     <span
                                       className={
                                         i === path.length - 1
-                                          ? 'text-sky-400 font-medium'
+                                          ? 'text-amber-400 font-semibold'
                                           : 'text-slate-400'
                                       }
                                     >
@@ -197,7 +197,7 @@ export const SearchView: FC<SearchViewProps> = ({
                           </div>
                         </div>
 
-                        <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-indigo-400 shrink-0 transition-colors" />
+                        <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-amber-400 shrink-0 transition-colors" />
                       </div>
                     )
                   })}
@@ -206,33 +206,33 @@ export const SearchView: FC<SearchViewProps> = ({
 
               {/* Containers Section */}
               {selectedCategory === 'all' && matchedContainers.length > 0 && (
-                <div className="space-y-2 mt-4 pt-4 border-t border-slate-800">
-                  <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-1">
-                    Konteynerler & Kutular ({matchedContainers.length})
+                <div className="space-y-2 mt-4 pt-4 border-t border-[#232a3c]">
+                  <div className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest px-1">
+                    Containers & Storage Bins ({matchedContainers.length})
                   </div>
                   {matchedContainers.map(({ container, path, itemCount, childCount }) => (
                     <div
                       key={container.id}
                       onClick={() => handleSelect(container.id)}
-                      className="group p-3 rounded-xl bg-slate-950/70 border border-slate-800/80 hover:border-sky-600/50 hover:bg-slate-800/40 cursor-pointer transition-all flex items-center justify-between gap-3"
+                      className="group p-3 rounded-lg bg-[#0c0f14] border border-[#232a3c] hover:border-amber-500/60 hover:bg-[#141b2b] cursor-pointer transition-all flex items-center justify-between gap-3"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-11 h-11 rounded-lg bg-indigo-950/40 border border-indigo-900/50 flex items-center justify-center shrink-0">
-                          <Layers className="w-5 h-5 text-indigo-400" />
+                        <div className="w-10 h-10 rounded bg-[#182338] border border-[#2d3a56] flex items-center justify-center shrink-0">
+                          <Layers className="w-4 h-4 text-amber-400" />
                         </div>
 
                         <div className="min-w-0">
                           <div className="flex items-center gap-2 mb-0.5">
-                            <h5 className="font-semibold text-slate-100 text-sm group-hover:text-sky-400 transition-colors truncate">
+                            <h5 className="font-semibold text-slate-100 text-sm group-hover:text-amber-400 transition-colors truncate">
                               {container.name}
                             </h5>
-                            <span className="text-[10px] text-slate-400">
-                              ({childCount} alt kutu, {itemCount} eşya)
+                            <span className="text-[10px] font-mono tabular-nums text-slate-400">
+                              ({childCount} sub-bins, {itemCount} items)
                             </span>
                           </div>
 
-                          <div className="flex items-center gap-1 text-xs text-slate-400 truncate">
-                            <span className="text-slate-500 font-medium">Yol:</span>
+                          <div className="flex items-center gap-1 text-xs font-mono text-slate-400 truncate">
+                            <span className="text-slate-500 font-semibold uppercase text-[10px]">Path:</span>
                             {path.map((node, i) => (
                               <Fragment key={node.id}>
                                 {i > 0 && (
@@ -241,7 +241,7 @@ export const SearchView: FC<SearchViewProps> = ({
                                 <span
                                   className={
                                     i === path.length - 1
-                                      ? 'text-indigo-400 font-medium'
+                                      ? 'text-amber-400 font-semibold'
                                       : 'text-slate-400'
                                   }
                                 >
@@ -253,7 +253,7 @@ export const SearchView: FC<SearchViewProps> = ({
                         </div>
                       </div>
 
-                      <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-sky-400 shrink-0 transition-colors" />
+                      <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-amber-400 shrink-0 transition-colors" />
                     </div>
                   ))}
                 </div>

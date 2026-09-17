@@ -65,7 +65,7 @@ export function App() {
       setContainers(cList)
       setItems(iList)
     } catch (err) {
-      console.error('Veriler yüklenirken hata:', err)
+      console.error('Failed to load inventory data:', err)
     } finally {
       setLoading(false)
     }
@@ -111,7 +111,7 @@ export function App() {
   }
 
   const handleDeleteItem = async (item: Item) => {
-    if (confirm(`"${item.name}" eşyasını silmek istediğinize emin misiniz?`)) {
+    if (confirm(`Are you sure you want to delete item "${item.name}"?`)) {
       await deleteItem(item.id)
       setItems((prev) => prev.filter((i) => i.id !== item.id))
     }
@@ -140,8 +140,8 @@ export function App() {
     const subCount = containers.filter((c) => c.parent_id === container.id).length
     const itemCount = items.filter((i) => i.container_id === container.id).length
     const promptMsg = subCount > 0 || itemCount > 0
-      ? `"${container.name}" konteynerini ve içindeki ${subCount} alt kutu ve ${itemCount} eşyayı silmek istediğinize emin misiniz?`
-      : `"${container.name}" konteynerini silmek istediğinize emin misiniz?`
+      ? `Delete "${container.name}" along with ${subCount} nested containers and ${itemCount} items?`
+      : `Are you sure you want to delete container "${container.name}"?`
 
     if (confirm(promptMsg)) {
       await deleteContainer(container.id)
@@ -164,7 +164,7 @@ export function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-[#0c0f14] text-slate-100 flex flex-col selection:bg-amber-500 selection:text-black font-sans">
       {/* Top Navigation */}
       <Navbar
         config={config}
@@ -186,19 +186,19 @@ export function App() {
       <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4">
         {/* BYOS Banner / Notice if running on demo local storage */}
         {config.useDemoMode && !config.isConfigured && (
-          <div className="mb-4 p-3 rounded-2xl bg-indigo-950/40 border border-indigo-900/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs text-indigo-200">
+          <div className="mb-4 p-3 rounded-lg bg-[#11151f] border border-[#232a3c] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs text-slate-300 font-mono">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-indigo-400 shrink-0" />
+              <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
               <span>
-                <strong>ShelfMap Deneme Modu:</strong> Şu an yerel demo verileriyle çalışıyorsunuz. Kendi Supabase bağlantınızı kurup verilerinizi bulutta saklamak için Ayarlar'a göz atın.
+                <strong className="text-amber-400">LOCAL OFFLINE STORAGE:</strong> Inventory is saved locally in browser storage. Connect your personal Supabase instance to enable cross-device cloud sync.
               </span>
             </div>
             <button
               onClick={() => setIsSettingsOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium shrink-0 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-semibold uppercase tracking-wider text-[11px] shrink-0 transition-colors shadow-sm"
             >
-              <Database className="w-3.5 h-3.5" />
-              <span>Supabase Bağla</span>
+              <Database className="w-3.5 h-3.5 text-black" />
+              <span>Connect Supabase</span>
             </button>
           </div>
         )}
@@ -212,9 +212,9 @@ export function App() {
         </div>
 
         {loading ? (
-          <div className="py-24 flex flex-col items-center justify-center text-slate-400">
-            <Loader2 className="w-8 h-8 animate-spin text-indigo-400 mb-3" />
-            <p className="text-xs">Atölye envanteri yükleniyor...</p>
+          <div className="py-24 flex flex-col items-center justify-center text-slate-400 font-mono">
+            <Loader2 className="w-8 h-8 animate-spin text-amber-400 mb-3" />
+            <p className="text-xs uppercase tracking-widest text-slate-400">Loading workshop inventory...</p>
           </div>
         ) : (
           <>
@@ -248,8 +248,8 @@ export function App() {
             {/* Section 1: Child Containers / Boxes */}
             <section className="mb-8">
               <div className="flex items-center justify-between mb-3 px-1">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-400">
-                  {currentContainer ? 'İçindeki Alt Kutular & Raflar' : 'Ana Konumlar & Odalar'} ({subContainers.length})
+                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-slate-400">
+                  {currentContainer ? 'Sub-Containers & Storage Bins' : 'Primary Storage Facilities'} ({subContainers.length})
                 </h3>
               </div>
 
@@ -282,10 +282,10 @@ export function App() {
             {/* Section 2: Items in this container */}
             <section className="mb-12">
               <div className="flex items-center justify-between mb-3 px-1">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-400">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-slate-400">
                   {currentContainer
-                    ? `"${currentContainer.name}" İçindeki Eşyalar & Parçalar`
-                    : 'Kök Düzeydeki / Atanmamış Eşyalar'}{' '}
+                    ? `Components & Items in "${currentContainer.name}"`
+                    : 'Root Level / Unassigned Items'}{' '}
                   ({currentItems.length})
                 </h3>
               </div>

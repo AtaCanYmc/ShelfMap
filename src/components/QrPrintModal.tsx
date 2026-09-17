@@ -41,7 +41,7 @@ export const QrPrintModal: FC<QrPrintModalProps> = ({
       const generated: LabelData[] = []
       for (const item of targets) {
         const path = getContainerPath(item.id, allContainers)
-        const pathString = path.map((p) => p.name).join(' > ')
+        const pathString = path.map((p) => p.name).join(' / ')
         const qrContent = item.qr_code || `shelfmap://c/${item.id}`
         const qrDataUrl = await QRCode.toDataURL(qrContent, {
           width: 320,
@@ -75,18 +75,23 @@ export const QrPrintModal: FC<QrPrintModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
-      <div className="relative w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden my-6 no-print">
+      <div className="relative w-full max-w-lg bg-[#11151f] border border-[#232a3c] rounded-xl shadow-2xl overflow-hidden my-6 no-print">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-purple-950/80 border border-purple-800/60 text-purple-400">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#232a3c] bg-[#0c0f14]">
+          <div className="flex items-center gap-2.5">
+            <div className="p-1.5 rounded bg-[#1a2234] border border-[#2d3a56] text-amber-400">
               <QrCode className="w-4 h-4" />
             </div>
-            <h3 className="font-semibold text-white text-base">QR Etiket Yazdır</h3>
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
+                Label Generation
+              </div>
+              <h3 className="font-semibold text-white text-sm">Print Adhesive Labels</h3>
+            </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded text-slate-400 hover:text-white hover:bg-[#1a2234] transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -95,30 +100,36 @@ export const QrPrintModal: FC<QrPrintModalProps> = ({
         {/* Content */}
         <div className="p-5 space-y-4">
           {/* Batch toggle */}
-          <div className="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs">
+          <div className="flex items-center justify-between p-3 rounded-lg bg-[#0c0f14] border border-[#232a3c] text-xs font-mono">
             <div className="flex items-center gap-2">
-              <Layers className="w-4 h-4 text-indigo-400" />
-              <span className="text-slate-200">
-                Alt konteynerlerin etiketlerini de dahil et ({allContainers.filter((c) => c.parent_id === container.id).length} alt kutu)
+              <Layers className="w-4 h-4 text-amber-400" />
+              <span className="text-slate-300">
+                Include child containers ({allContainers.filter((c) => c.parent_id === container.id).length} nested bins)
               </span>
             </div>
             <input
               type="checkbox"
               checked={batchMode}
               onChange={(e) => setBatchMode(e.target.checked)}
-              className="w-4 h-4 rounded text-indigo-600 focus:ring-0 focus:ring-offset-0 bg-slate-900 border-slate-700 cursor-pointer"
+              className="w-4 h-4 rounded text-amber-500 focus:ring-0 bg-[#11151f] border-[#232a3c] cursor-pointer"
             />
           </div>
 
           {/* Label Preview Container */}
-          <div className="max-h-80 overflow-y-auto space-y-4 p-2">
+          <div className="max-h-80 overflow-y-auto space-y-3 p-1">
             {labels.map((lbl) => (
               <div
                 key={lbl.container.id}
-                className="bg-white text-slate-950 p-4 rounded-xl shadow-lg border border-slate-200 flex flex-col sm:flex-row items-center gap-4"
+                className="bg-[#ffffff] text-black p-3.5 rounded border border-[#e2e8f0] shadow-sm flex flex-col sm:flex-row items-center gap-4 relative overflow-hidden"
               >
+                {/* Physical crop marks in corners */}
+                <div className="absolute top-1 left-1 w-2 h-2 border-t border-l border-neutral-400 pointer-events-none" />
+                <div className="absolute top-1 right-1 w-2 h-2 border-t border-r border-neutral-400 pointer-events-none" />
+                <div className="absolute bottom-1 left-1 w-2 h-2 border-b border-l border-neutral-400 pointer-events-none" />
+                <div className="absolute bottom-1 right-1 w-2 h-2 border-b border-r border-neutral-400 pointer-events-none" />
+
                 {/* QR Canvas image */}
-                <div className="w-28 h-28 shrink-0 bg-white p-1 rounded-lg border border-slate-100 flex items-center justify-center">
+                <div className="w-24 h-24 shrink-0 bg-white p-1 border border-neutral-200 flex items-center justify-center">
                   <img
                     src={lbl.qrDataUrl}
                     alt={lbl.container.name}
@@ -128,16 +139,16 @@ export const QrPrintModal: FC<QrPrintModalProps> = ({
 
                 {/* Label textual details */}
                 <div className="flex-1 min-w-0 text-center sm:text-left">
-                  <div className="text-[10px] uppercase font-bold tracking-wider text-indigo-600 mb-0.5">
-                    ShelfMap Depolama
+                  <div className="text-[9px] uppercase font-mono font-bold tracking-widest text-neutral-500 mb-0.5">
+                    SHELFMAP // PARTS BIN
                   </div>
-                  <h4 className="font-bold text-base leading-tight text-slate-900 truncate">
+                  <h4 className="font-bold text-base leading-tight text-neutral-900 truncate">
                     {lbl.container.name}
                   </h4>
-                  <p className="text-[11px] text-slate-600 mt-1 line-clamp-2 leading-relaxed">
+                  <p className="text-[10px] font-mono text-neutral-600 mt-1 line-clamp-2 leading-relaxed">
                     {lbl.pathString}
                   </p>
-                  <div className="mt-2 text-[10px] font-mono text-slate-400 truncate">
+                  <div className="mt-1.5 text-[9px] font-mono text-neutral-400 truncate">
                     {lbl.container.qr_code || `shelfmap://c/${lbl.container.id}`}
                   </div>
                 </div>
@@ -145,66 +156,66 @@ export const QrPrintModal: FC<QrPrintModalProps> = ({
             ))}
           </div>
 
-          {/* Quick Copy Link */}
-          <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs">
-            <span className="font-mono text-slate-400 truncate text-[11px]">
+          {/* Quick Copy URI */}
+          <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-[#0c0f14] border border-[#232a3c] text-xs font-mono">
+            <span className="text-slate-400 truncate text-[11px]">
               {container.qr_code || `shelfmap://c/${container.id}`}
             </span>
             <button
               type="button"
               onClick={handleCopyCode}
-              className="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 font-medium shrink-0 ml-2"
+              className="flex items-center gap-1 text-amber-400 hover:text-amber-300 font-semibold shrink-0 ml-2"
             >
               {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-              <span>{copied ? 'Kopyalandı' : 'Kopyala'}</span>
+              <span>{copied ? 'Copied' : 'Copy'}</span>
             </button>
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#232a3c]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-slate-400 hover:text-white transition-colors"
+              className="px-4 py-2 text-xs font-mono text-slate-400 hover:text-white transition-colors"
             >
-              Kapat
+              Close
             </button>
             <button
               type="button"
               onClick={handlePrint}
-              className="flex items-center gap-2 px-5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors shadow-md shadow-purple-950"
+              className="flex items-center gap-2 px-5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm"
             >
-              <Printer className="w-4 h-4" />
-              <span>Etiketi Yazdır ({labels.length})</span>
+              <Printer className="w-4 h-4 text-black" />
+              <span>Print Labels ({labels.length})</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Hidden container for print only */}
+      {/* Physical adhesive print sheet output */}
       <div className="hidden print:block fixed inset-0 bg-white p-4 z-50 text-black">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3">
           {labels.map((lbl) => (
             <div
               key={lbl.container.id}
-              className="border-2 border-dashed border-gray-400 p-3 rounded-lg flex items-center gap-3 page-break-inside-avoid"
+              className="border border-neutral-400 p-3 rounded flex items-center gap-3 page-break-inside-avoid"
             >
               <img
                 src={lbl.qrDataUrl}
                 alt={lbl.container.name}
-                className="w-24 h-24 object-contain shrink-0"
+                className="w-20 h-20 object-contain shrink-0"
               />
               <div className="min-w-0">
-                <div className="text-[9px] font-bold uppercase text-gray-500">
-                  ShelfMap Kutu Etiketi
+                <div className="text-[8px] font-mono font-bold uppercase tracking-wider text-neutral-500">
+                  SHELFMAP STORAGE
                 </div>
                 <div className="font-bold text-sm leading-tight truncate">
                   {lbl.container.name}
                 </div>
-                <div className="text-[10px] text-gray-700 mt-1 line-clamp-2">
+                <div className="text-[9px] font-mono text-neutral-700 mt-0.5 line-clamp-2">
                   {lbl.pathString}
                 </div>
-                <div className="text-[9px] font-mono text-gray-400 mt-1 truncate">
+                <div className="text-[8px] font-mono text-neutral-400 mt-1 truncate">
                   {lbl.container.qr_code || `shelfmap://c/${lbl.container.id}`}
                 </div>
               </div>

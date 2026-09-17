@@ -70,7 +70,7 @@ export const ContainerModal: FC<ContainerModalProps> = ({
       const uploadedUrl = await uploadWorkshopImage(file)
       setImageUrl(uploadedUrl)
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Görsel yüklenirken hata oluştu')
+      setError(err instanceof Error ? err.message : 'Failed to upload photo')
     } finally {
       setUploading(false)
     }
@@ -79,12 +79,12 @@ export const ContainerModal: FC<ContainerModalProps> = ({
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (!name.trim()) {
-      setError('Lütfen bir konteyner / konum adı girin')
+      setError('Please provide a container name')
       return
     }
 
     if (initialContainer && wouldCreateCycle(initialContainer.id, parentId, allContainers)) {
-      setError('Bir konteyner kendi altına veya kendi alt klasörüne taşınamaz (döngüsel hata).')
+      setError('A container cannot be placed inside itself or its own sub-containers (cycle detected).')
       return
     }
 
@@ -103,13 +103,12 @@ export const ContainerModal: FC<ContainerModalProps> = ({
       )
       onClose()
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Kaydedilirken hata oluştu')
+      setError(err instanceof Error ? err.message : 'Failed to save container')
     } finally {
       setSaving(false)
     }
   }
 
-  // Pre-calculate readable path for all containers, filtering out self/descendants if editing
   const availableParents = allContainers
     .filter((c) => {
       if (!initialContainer) return true
@@ -117,26 +116,26 @@ export const ContainerModal: FC<ContainerModalProps> = ({
     })
     .map((c) => {
       const path = getContainerPath(c.id, allContainers)
-      const label = path.map((p) => p.name).join(' > ')
+      const label = path.map((p) => p.name).join(' / ')
       return { id: c.id, label }
     })
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm overflow-y-auto">
+      <div className="relative w-full max-w-lg bg-[#11151f] border border-[#232a3c] rounded-xl shadow-2xl overflow-hidden my-6">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#202738] bg-[#0d1017]">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-indigo-950/80 border border-indigo-800/60 text-indigo-400">
-              <Layers className="w-4 h-4" />
+            <div className="p-1 rounded bg-[#161c28] border border-[#273248] text-amber-400">
+              <Layers className="w-4 h-4 stroke-[2]" />
             </div>
-            <h3 className="font-semibold text-white text-base">
-              {initialContainer ? 'Konteyneri Düzenle' : 'Yeni Konteyner / Kutu Ekle'}
+            <h3 className="font-semibold text-white text-sm">
+              {initialContainer ? 'Edit Container' : 'New Storage Container / Box'}
             </h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1 rounded text-slate-400 hover:text-white hover:bg-[#1c2232] transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -145,96 +144,91 @@ export const ContainerModal: FC<ContainerModalProps> = ({
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
           {error && (
-            <div className="p-3 rounded-xl bg-rose-950/60 border border-rose-800 text-rose-300 text-xs">
+            <div className="p-2.5 rounded-lg bg-rose-950/40 border border-rose-800 text-rose-300 text-xs">
               {error}
             </div>
           )}
 
           {/* Name */}
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">
-              Konteyner / Konum Adı *
+            <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
+              Container / Location Name *
             </label>
             <input
               type="text"
               required
-              placeholder="Örn: Çalışma Odası, Metal Dolap, 3. Çekmece, Alet Çantası"
+              placeholder="e.g. Lab Workbench, Metal Cabinet, Drawer 2, Tool Box"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-800 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl text-sm text-slate-100 placeholder-slate-500 outline-none transition-all"
+              className="w-full px-3 py-2 bg-[#0a0d13] border border-[#232a3c] focus:border-amber-500 rounded-lg text-xs sm:text-sm text-slate-100 placeholder-slate-600 outline-none"
             />
           </div>
 
           {/* Parent Container Selector */}
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">
-              Üst Konum (Hangi odanın/dolabın içinde?)
+            <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
+              Parent Location (Nesting)
             </label>
             <select
               value={parentId || ''}
               onChange={(e) => setParentId(e.target.value || null)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-800 focus:border-indigo-500 rounded-xl text-xs text-slate-100 outline-none"
+              className="w-full px-3 py-2 bg-[#0a0d13] border border-[#232a3c] focus:border-amber-500 rounded-lg text-xs text-slate-100 font-mono outline-none"
             >
-              <option value="">-- Ana Konum (Kök Seviye / Oda / Ev) --</option>
+              <option value="">-- Root Level (Room / Workshop) --</option>
               {availableParents.map((opt) => (
                 <option key={opt.id} value={opt.id}>
                   {opt.label}
                 </option>
               ))}
             </select>
-            <p className="text-[11px] text-slate-500 mt-1">
-              Boş bırakırsanız bağımsız bir ana lokasyon (Örn: Oda veya Atölye) olarak eklenir.
-            </p>
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">
-              Açıklama (Opsiyonel)
+            <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
+              Description (Optional)
             </label>
             <textarea
               rows={2}
-              placeholder="Örn: Kapının yanındaki 5 katlı raf ünitesinin 2. katı..."
+              placeholder="e.g. Second shelf from top in grey industrial rack..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-800 focus:border-indigo-500 rounded-xl text-xs text-slate-100 placeholder-slate-500 outline-none resize-none"
+              className="w-full px-3 py-2 bg-[#0a0d13] border border-[#232a3c] focus:border-amber-500 rounded-lg text-xs text-slate-100 placeholder-slate-600 outline-none resize-none font-mono"
             />
           </div>
 
           {/* Photo Upload Section */}
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1.5">
-              Kutunun / Lokasyonun Fotoğrafı
+            <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
+              Exterior Photo of Box / Shelf
             </label>
 
-            {/* Preview if exists */}
             {imageUrl ? (
-              <div className="relative mb-2 w-full h-36 rounded-xl bg-slate-950 border border-slate-800 overflow-hidden group">
+              <div className="relative mb-2 w-full h-32 rounded-lg bg-[#0a0d13] border border-[#232a3c] overflow-hidden">
                 <img
                   src={imageUrl}
-                  alt="Önizleme"
+                  alt="Preview"
                   className="w-full h-full object-cover"
                 />
                 <button
                   type="button"
                   onClick={() => setImageUrl('')}
-                  className="absolute top-2 right-2 p-1.5 rounded-lg bg-black/70 hover:bg-rose-900 text-white transition-colors"
-                  title="Fotoğrafı Kaldır"
+                  className="absolute top-2 right-2 p-1 rounded bg-black/80 hover:bg-rose-900 text-white transition-colors"
+                  title="Remove Image"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
               </div>
             ) : null}
 
-            {/* Actions */}
             <div className="flex flex-wrap items-center gap-2">
-              <label className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium cursor-pointer transition-colors border border-slate-700">
+              <label className="btn-tactile flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#141924] hover:bg-[#1c2232] text-slate-200 text-xs font-medium cursor-pointer border border-[#263146] transition-colors">
                 {uploading ? (
-                  <Loader2 className="w-4 h-4 animate-spin text-indigo-400" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-400" />
                 ) : (
-                  <Camera className="w-4 h-4 text-sky-400" />
+                  <Camera className="w-3.5 h-3.5 text-sky-400" />
                 )}
-                <span>Kameradan Çek</span>
+                <span>Camera</span>
                 <input
                   type="file"
                   accept="image/*"
@@ -245,9 +239,9 @@ export const ContainerModal: FC<ContainerModalProps> = ({
                 />
               </label>
 
-              <label className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium cursor-pointer transition-colors border border-slate-700">
-                <Upload className="w-4 h-4 text-emerald-400" />
-                <span>Galeriden Seç</span>
+              <label className="btn-tactile flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#141924] hover:bg-[#1c2232] text-slate-200 text-xs font-medium cursor-pointer border border-[#263146] transition-colors">
+                <Upload className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Gallery</span>
                 <input
                   type="file"
                   accept="image/*"
@@ -260,57 +254,57 @@ export const ContainerModal: FC<ContainerModalProps> = ({
               <button
                 type="button"
                 onClick={() => setShowUrlInput(!showUrlInput)}
-                className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-slate-950 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs border border-slate-800 transition-colors"
+                className="btn-tactile flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#0a0d13] hover:bg-[#141924] text-slate-400 hover:text-slate-200 text-xs border border-[#232a3c] transition-colors"
               >
                 <LinkIcon className="w-3.5 h-3.5" />
-                <span>URL ile Ekle</span>
+                <span>URL</span>
               </button>
             </div>
 
             {showUrlInput && (
               <input
                 type="url"
-                placeholder="https://... görsel web adresi"
+                placeholder="https://... image web address"
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
-                className="mt-2 w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-100 placeholder-slate-600 outline-none"
+                className="mt-2 w-full px-3 py-1.5 bg-[#0a0d13] border border-[#232a3c] rounded-lg text-xs text-slate-100 placeholder-slate-600 outline-none font-mono"
               />
             )}
           </div>
 
           {/* QR Code / Physical Label Identifier */}
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">
-              Özel QR / Barkod Kodu (Opsiyonel)
+            <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
+              Custom QR / Barcode ID (Optional)
             </label>
             <div className="relative">
               <input
                 type="text"
-                placeholder="Boş bırakılırsa otomatik benzersiz kod atanır"
+                placeholder="Auto-generated if left blank"
                 value={qrCode}
                 onChange={(e) => setQrCode(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 focus:border-indigo-500 rounded-xl text-xs text-slate-100 placeholder-slate-600 outline-none font-mono"
+                className="w-full pl-8 pr-3 py-2 bg-[#0a0d13] border border-[#232a3c] focus:border-amber-500 rounded-lg text-xs text-slate-100 placeholder-slate-600 outline-none font-mono"
               />
-              <QrCode className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
+              <QrCode className="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-2.5" />
             </div>
           </div>
 
-          {/* Submit Buttons */}
-          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+          {/* Submit */}
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#202738]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-slate-400 hover:text-white transition-colors"
+              className="btn-tactile px-3.5 py-1.5 text-xs text-slate-400 hover:text-white transition-colors"
             >
-              İptal
+              Cancel
             </button>
             <button
               type="submit"
               disabled={saving || uploading}
-              className="flex items-center gap-2 px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-xs font-medium transition-colors shadow-md shadow-indigo-950"
+              className="btn-tactile flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 text-xs font-semibold transition-colors"
             >
               {saving && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-              <span>{initialContainer ? 'Değişiklikleri Kaydet' : 'Konteyneri Ekle'}</span>
+              <span>{initialContainer ? 'Save Changes' : 'Create Container'}</span>
             </button>
           </div>
         </form>

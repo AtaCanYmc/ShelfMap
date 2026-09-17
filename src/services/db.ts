@@ -117,7 +117,7 @@ export async function fetchAllContainers(): Promise<Container[]> {
       .order('created_at', { ascending: false })
 
     if (error) {
-      console.error('Supabase fetchContainers hatası:', error)
+      console.error('Supabase fetchContainers error:', error)
       throw error
     }
     return (data as Container[]) || []
@@ -175,7 +175,7 @@ export async function updateContainer(
 
   const list = loadLocalContainers()
   const idx = list.findIndex((c) => c.id === id)
-  if (idx === -1) throw new Error('Konteyner bulunamadı')
+  if (idx === -1) throw new Error('Container not found')
   list[idx] = { ...list[idx], ...updates }
   saveLocalContainers(list)
   return list[idx]
@@ -232,7 +232,7 @@ export async function fetchAllItems(): Promise<Item[]> {
       .order('created_at', { ascending: false })
 
     if (error) {
-      console.error('Supabase fetchItems hatası:', error)
+      console.error('Supabase fetchItems error:', error)
       throw error
     }
     return (data as Item[]) || []
@@ -287,7 +287,7 @@ export async function updateItem(
 
   const list = loadLocalItems()
   const idx = list.findIndex((i) => i.id === id)
-  if (idx === -1) throw new Error('Eşya bulunamadı')
+  if (idx === -1) throw new Error('Item not found')
   list[idx] = { ...list[idx], ...updates }
   saveLocalItems(list)
   return list[idx]
@@ -306,18 +306,24 @@ export async function deleteItem(id: string): Promise<void> {
   saveLocalItems(filtered)
 }
 
-export async function updateItemQuantity(id: string, delta: number): Promise<Item> {
+export async function updateItemQuantity(
+  id: string,
+  delta: number
+): Promise<Item> {
   const client = getSupabaseClient()
   if (client) {
-    // Read current quantity first
-    const { data: current, error: readErr } = await client
+    // Read current, compute, and update
+    const { data: current, error: readError } = await client
       .from('items')
       .select('quantity')
       .eq('id', id)
       .single()
-    if (readErr) throw readErr
 
-    const newQty = Math.max(0, (current?.quantity || 0) + delta)
+    if (readError) throw readError
+
+    const currentQty = (current?.quantity as number) || 0
+    const newQty = Math.max(0, currentQty + delta)
+
     const { data, error } = await client
       .from('items')
       .update({ quantity: newQty })
@@ -331,7 +337,7 @@ export async function updateItemQuantity(id: string, delta: number): Promise<Ite
 
   const list = loadLocalItems()
   const idx = list.findIndex((i) => i.id === id)
-  if (idx === -1) throw new Error('Eşya bulunamadı')
+  if (idx === -1) throw new Error('Item not found')
   list[idx].quantity = Math.max(0, (list[idx].quantity || 0) + delta)
   saveLocalItems(list)
   return list[idx]
@@ -381,8 +387,8 @@ export function searchWarehouse(
     .map((item) => {
       const path = getContainerPath(item.container_id, containers)
       const containerName = item.container_id
-        ? containers.find((c) => c.id === item.container_id)?.name || 'Bilinmeyen Konum'
-        : 'Kök Dizin (Konteyner atanmamış)'
+        ? containers.find((c) => c.id === item.container_id)?.name || 'Unknown Location'
+        : 'Root Level (Unassigned)'
 
       return {
         item,
@@ -429,7 +435,7 @@ export function exportAllData(containers: Container[], items: Item[]): string {
 export function importAllData(jsonData: string): { containers: Container[]; items: Item[] } {
   const parsed = JSON.parse(jsonData)
   if (!Array.isArray(parsed.containers) || !Array.isArray(parsed.items)) {
-    throw new Error('Geçersiz ShelfMap yedek dosyası formatı.')
+    throw new Error('Invalid ShelfMap backup format.')
   }
   saveLocalContainers(parsed.containers)
   saveLocalItems(parsed.items)

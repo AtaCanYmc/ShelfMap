@@ -53,7 +53,7 @@ export function getSupabaseClient(): SupabaseClient | null {
     currentKey = config.anonKey
     return cachedClient
   } catch (err) {
-    console.error('Supabase client oluşturulamadı:', err)
+    console.error('Failed to initialize Supabase client:', err)
     return null
   }
 }
@@ -65,13 +65,13 @@ export async function testSupabaseConnection(url: string, anonKey: string): Prom
     if (error) {
       // If table does not exist, provide clear message
       if (error.code === '42P01') {
-        return { success: false, error: 'Tablolar henüz oluşturulmamış. Lütfen SQL scriptini Supabase SQL Editor\'da çalıştırın.' }
+        return { success: false, error: 'Database tables not detected. Please run the setup SQL script in your Supabase SQL Editor.' }
       }
       return { success: false, error: error.message }
     }
     return { success: true }
   } catch (err: unknown) {
-    return { success: false, error: err instanceof Error ? err.message : 'Bağlantı hatası' }
+    return { success: false, error: err instanceof Error ? err.message : 'Connection failed' }
   }
 }
 
@@ -102,8 +102,8 @@ export async function uploadWorkshopImage(file: File): Promise<string> {
     })
 
   if (uploadError) {
-    console.error('Storage yükleme hatası:', uploadError)
-    throw new Error(`Görsel yüklenemedi: ${uploadError.message}`)
+    console.error('Storage upload error:', uploadError)
+    throw new Error(`Failed to upload image: ${uploadError.message}`)
   }
 
   const { data } = client.storage.from('workshop-images').getPublicUrl(filePath)

@@ -57,7 +57,6 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
 
   useEffect(() => {
     if (!isOpen) {
-      // Stop scanner if active
       if (scannerRef.current) {
         scannerRef.current
           .stop()
@@ -90,7 +89,7 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
           { facingMode: 'environment' },
           {
             fps: 10,
-            qrbox: { width: 250, height: 250 },
+            qrbox: { width: 240, height: 240 },
             aspectRatio: 1.0
           },
           (decodedText) => {
@@ -103,9 +102,9 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
         )
       } catch (err: unknown) {
         if (isMounted) {
-          console.warn('Kamera açılamadı:', err)
+          console.warn('Camera failed:', err)
           setErrorMsg(
-            'Kamera başlatılamadı. Lütfen kamera izni verdiğinizden emin olun veya manuel giriş yapın.'
+            'Unable to initialize optical sensor. Check camera permissions or switch to manual input below.'
           )
         }
       }
@@ -144,7 +143,7 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
       setErrorMsg(null)
     } else {
       setMatchedContainer(null)
-      setErrorMsg(`"${text}" koduna ait bir konteyner bulunamadı.`)
+      setErrorMsg(`No container indexed under code: "${text}"`)
     }
   }
 
@@ -165,7 +164,7 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
       const result = await scannerRef.current.scanFile(file, true)
       handleScanSuccess(result)
     } catch {
-      setErrorMsg('Görselde QR kod tespit edilemedi.')
+      setErrorMsg('No optical QR or barcode code recognized in image.')
     }
   }
 
@@ -174,19 +173,24 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
     : []
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
-      <div className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden my-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+      <div className="relative w-full max-w-md bg-[#11151f] border border-[#232a3c] rounded-xl shadow-2xl overflow-hidden my-6">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-sky-950/80 border border-sky-800/60 text-sky-400">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#232a3c] bg-[#0c0f14]">
+          <div className="flex items-center gap-2.5">
+            <div className="p-1.5 rounded bg-[#1a2234] border border-[#2d3a56] text-amber-400">
               <Camera className="w-4 h-4" />
             </div>
-            <h3 className="font-semibold text-white text-base">Kutu QR Kodu Tara</h3>
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
+                Optical Scanner
+              </div>
+              <h3 className="font-semibold text-white text-sm">Container QR / Barcode Reader</h3>
+            </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded text-slate-400 hover:text-white hover:bg-[#1a2234] transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -194,33 +198,36 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
 
         {/* Content */}
         <div className="p-5">
-          {/* Camera View Area */}
-          <div className="relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 aspect-square flex items-center justify-center shadow-inner">
+          {/* Camera View Area with HUD corner reticles */}
+          <div className="relative rounded-lg overflow-hidden bg-[#07090d] border border-[#232a3c] aspect-square flex items-center justify-center shadow-inner">
             <div id={scannerContainerId} className="w-full h-full" />
 
             {/* Target reticle overlay if active */}
             {!matchedContainer && (
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                <div className="w-48 h-48 border-2 border-indigo-500/70 rounded-2xl relative animate-pulse">
-                  <div className="absolute top-0 left-0 w-4 h-4 border-t-4 border-l-4 border-indigo-400 -mt-1 -ml-1 rounded-tl" />
-                  <div className="absolute top-0 right-0 w-4 h-4 border-t-4 border-r-4 border-indigo-400 -mt-1 -mr-1 rounded-tr" />
-                  <div className="absolute bottom-0 left-0 w-4 h-4 border-b-4 border-l-4 border-indigo-400 -mb-1 -ml-1 rounded-bl" />
-                  <div className="absolute bottom-0 right-0 w-4 h-4 border-b-4 border-r-4 border-indigo-400 -mb-1 -mr-1 rounded-br" />
+                <div className="w-52 h-52 border border-amber-500/40 relative">
+                  <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-amber-400 -mt-0.5 -ml-0.5" />
+                  <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-amber-400 -mt-0.5 -mr-0.5" />
+                  <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-amber-400 -mb-0.5 -ml-0.5" />
+                  <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-amber-400 -mb-0.5 -mr-0.5" />
+                  <div className="absolute top-2 left-2 font-mono text-[9px] uppercase tracking-widest text-amber-400/80">
+                    SCAN_ZONE
+                  </div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Scanned Result Banner */}
+          {/* Scanned Result Card */}
           {matchedContainer && (
-            <div className="mt-4 p-4 rounded-xl bg-indigo-950/70 border border-indigo-500/60 animate-in fade-in zoom-in-95">
-              <div className="flex items-center justify-between text-indigo-300 text-xs font-semibold uppercase tracking-wider mb-1">
-                <div className="flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-indigo-400" />
-                  <span>Kutu Tespit Edildi!</span>
+            <div className="mt-4 p-4 rounded-lg bg-[#141b2b] border border-amber-500/60 shadow-lg animate-in fade-in">
+              <div className="flex items-center justify-between text-amber-400 text-[11px] font-mono font-semibold uppercase tracking-wider mb-1.5">
+                <div className="flex items-center gap-1.5">
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>CONTAINER IDENTIFIED</span>
                 </div>
                 {scannedCode && (
-                  <span className="font-mono text-[10px] text-indigo-300/80 truncate max-w-[120px]">
+                  <span className="font-mono text-[10px] text-slate-400 truncate max-w-[140px]">
                     {scannedCode}
                   </span>
                 )}
@@ -228,8 +235,8 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
               <h4 className="text-base font-bold text-white mb-1">
                 {matchedContainer.name}
               </h4>
-              <p className="text-xs text-slate-400 mb-3">
-                {containerPath.map((p) => p.name).join(' > ')}
+              <p className="text-xs font-mono text-slate-400 mb-3 truncate">
+                {containerPath.map((p) => p.name).join(' / ')}
               </p>
 
               <div className="flex items-center gap-2">
@@ -238,9 +245,9 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
                     onSelectContainer(matchedContainer.id)
                     onClose()
                   }}
-                  className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition-colors"
+                  className="flex-1 flex items-center justify-center gap-1.5 px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-black rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm"
                 >
-                  <span>Kutuyu Aç</span>
+                  <span>Open Container</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
@@ -248,11 +255,11 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
                     onQuickAddItem(matchedContainer.id)
                     onClose()
                   }}
-                  className="flex items-center justify-center gap-1 px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold transition-colors"
-                  title="Bu kutuya hemen yeni eşya ekle"
+                  className="flex items-center justify-center gap-1.5 px-3.5 py-2 bg-[#1a2234] hover:bg-[#232d45] text-slate-200 border border-[#2e3b57] rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors"
+                  title="Quick add item to this container"
                 >
                   <Plus className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Eşya Ekle</span>
+                  <span>Add Item</span>
                 </button>
               </div>
             </div>
@@ -260,26 +267,26 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
 
           {/* Error Message */}
           {errorMsg && !matchedContainer && (
-            <div className="mt-3 p-3 rounded-xl bg-amber-950/50 border border-amber-800/60 text-amber-300 text-xs flex items-start gap-2">
+            <div className="mt-3 p-3 rounded-lg bg-[#2a1315] border border-[#7f1d1d] text-[#fca5a5] text-xs font-mono flex items-start gap-2">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
               <div>{errorMsg}</div>
             </div>
           )}
 
           {/* Fallback Tools (Manual entry & Image file scan) */}
-          <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+          <div className="mt-4 pt-3 border-t border-[#232a3c] flex items-center justify-between text-xs font-mono">
             <button
               type="button"
               onClick={() => setShowManual(!showManual)}
               className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors"
             >
-              <Keyboard className="w-3.5 h-3.5 text-indigo-400" />
-              <span>{showManual ? 'Kameraya Dön' : 'Manuel Kod Gir'}</span>
+              <Keyboard className="w-3.5 h-3.5 text-amber-400" />
+              <span>{showManual ? 'Return to Camera' : 'Manual Code Input'}</span>
             </button>
 
             <label className="flex items-center gap-1.5 text-slate-400 hover:text-white cursor-pointer transition-colors">
-              <Upload className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Fotoğraftan Tara</span>
+              <Upload className="w-3.5 h-3.5 text-sky-400" />
+              <span>Scan File</span>
               <input
                 type="file"
                 accept="image/*"
@@ -293,16 +300,16 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
             <form onSubmit={handleManualSearch} className="mt-3 flex gap-2">
               <input
                 type="text"
-                placeholder="Örn: shelfmap://c/drawer-2 veya kutu ID"
+                placeholder="e.g. shelfmap://c/drawer-2 or container ID"
                 value={manualCode}
                 onChange={(e) => setManualCode(e.target.value)}
-                className="flex-1 px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 placeholder-slate-600 outline-none"
+                className="flex-1 px-3 py-2 bg-[#0c0f14] border border-[#232a3c] focus:border-amber-500 rounded-lg text-xs font-mono text-slate-200 placeholder-slate-600 outline-none"
               />
               <button
                 type="submit"
-                className="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-medium transition-colors"
+                className="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-black rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors"
               >
-                Ara
+                Lookup
               </button>
             </form>
           )}

@@ -25,33 +25,38 @@ interface ItemCardProps {
 
 export function getCategoryBadge(category: string) {
   const cat = category.toLowerCase()
-  if (cat.includes('mikro') || cat.includes('esp') || cat.includes('arduino') || cat.includes('işlemci')) {
+  if (cat.includes('micro') || cat.includes('mcu') || cat.includes('esp') || cat.includes('arduino')) {
     return {
       icon: Cpu,
-      classes: 'bg-sky-950/70 text-sky-400 border-sky-800/50'
+      label: 'MCU',
+      classes: 'bg-sky-950/40 text-sky-400 border-sky-800/40'
     }
   }
-  if (cat.includes('alet') || cat.includes('kumpas') || cat.includes('havya') || cat.includes('pense')) {
+  if (cat.includes('tool') || cat.includes('caliper') || cat.includes('iron') || cat.includes('plier')) {
     return {
       icon: Wrench,
-      classes: 'bg-amber-950/70 text-amber-400 border-amber-800/50'
+      label: 'TOOL',
+      classes: 'bg-amber-950/40 text-amber-400 border-amber-800/40'
     }
   }
-  if (cat.includes('sensör') || cat.includes('rf') || cat.includes('anten') || cat.includes('modül')) {
+  if (cat.includes('sensor') || cat.includes('rf') || cat.includes('module') || cat.includes('display')) {
     return {
       icon: Radio,
-      classes: 'bg-purple-950/70 text-purple-400 border-purple-800/50'
+      label: 'SENSOR',
+      classes: 'bg-violet-950/40 text-violet-400 border-violet-800/40'
     }
   }
-  if (cat.includes('vida') || cat.includes('somun') || cat.includes('hırdavat') || cat.includes('mekanik')) {
+  if (cat.includes('screw') || cat.includes('nut') || cat.includes('hardware') || cat.includes('fastener')) {
     return {
       icon: Sliders,
-      classes: 'bg-emerald-950/70 text-emerald-400 border-emerald-800/50'
+      label: 'FASTENER',
+      classes: 'bg-emerald-950/40 text-emerald-400 border-emerald-800/40'
     }
   }
   return {
     icon: Package,
-    classes: 'bg-slate-800 text-slate-300 border-slate-700'
+    label: category.toUpperCase().slice(0, 8),
+    classes: 'bg-[#181f2c] text-slate-400 border-[#273248]'
   }
 }
 
@@ -68,39 +73,39 @@ export const ItemCard: FC<ItemCardProps> = ({
   const IconComponent = badge.icon
 
   return (
-    <div className="group bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-2xl p-3.5 sm:p-4 flex gap-3 sm:gap-4 items-start transition-all hover:shadow-md hover:shadow-slate-950/40">
-      {/* Thumbnail */}
+    <div className="group bg-[#121622] border border-[#232a3b] hover:border-[#38435d] rounded-xl p-3 sm:p-3.5 flex gap-3 items-start transition-colors">
+      {/* Thumbnail or Tech Placeholder */}
       <div
         onClick={() => item.image_url && onPreviewImage(item.image_url, item.name)}
-        className={`w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0 overflow-hidden relative ${
-          item.image_url ? 'cursor-pointer' : ''
+        className={`w-14 h-14 sm:w-16 sm:h-16 rounded-lg bg-[#0b0e14] border border-[#1e2536] flex items-center justify-center shrink-0 overflow-hidden relative ${
+          item.image_url ? 'cursor-pointer hover:border-slate-500' : 'bg-tech-grid'
         }`}
       >
         {item.image_url ? (
           <img
             src={item.image_url}
             alt={item.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+            className="w-full h-full object-cover transition-opacity hover:opacity-90"
             loading="lazy"
           />
         ) : (
-          <IconComponent className="w-8 h-8 text-slate-700" />
+          <IconComponent className="w-6 h-6 text-slate-600 stroke-[1.5]" />
         )}
       </div>
 
       {/* Main Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
-          <div>
-            <div className="flex items-center gap-1.5 flex-wrap mb-1">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 mb-1 font-mono">
               <span
-                className={`inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full border ${badge.classes}`}
+                className={`inline-flex items-center gap-1 text-[9px] font-semibold px-1.5 py-0.2 rounded border ${badge.classes}`}
               >
-                <IconComponent className="w-3 h-3" />
+                <IconComponent className="w-2.5 h-2.5" />
                 <span>{item.category}</span>
               </span>
             </div>
-            <h4 className="font-semibold text-slate-100 text-sm sm:text-base leading-snug line-clamp-1">
+            <h4 className="font-semibold text-slate-100 text-xs sm:text-sm leading-snug line-clamp-1">
               {item.name}
             </h4>
           </div>
@@ -109,9 +114,9 @@ export const ItemCard: FC<ItemCardProps> = ({
           <div className="relative shrink-0">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors"
+              className="p-1 rounded hover:bg-[#1a2130] text-slate-500 hover:text-slate-200 transition-colors"
             >
-              <MoreVertical className="w-4 h-4" />
+              <MoreVertical className="w-3.5 h-3.5" />
             </button>
 
             {menuOpen && (
@@ -120,36 +125,36 @@ export const ItemCard: FC<ItemCardProps> = ({
                   className="fixed inset-0 z-40"
                   onClick={() => setMenuOpen(false)}
                 />
-                <div className="absolute right-0 top-full mt-1 w-36 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-50 py-1 text-xs animate-in fade-in">
+                <div className="absolute right-0 top-full mt-1 w-36 bg-[#141924] border border-[#293245] rounded-lg shadow-xl z-50 py-1 text-xs">
                   <button
                     onClick={() => {
                       setMenuOpen(false)
                       onEdit(item)
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-slate-200 hover:bg-slate-700 transition-colors"
+                    className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-200 hover:bg-[#1f2738] transition-colors"
                   >
-                    <Edit2 className="w-3.5 h-3.5 text-indigo-400" />
-                    <span>Düzenle</span>
+                    <Edit2 className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Edit</span>
                   </button>
                   <button
                     onClick={() => {
                       setMenuOpen(false)
                       onMove(item)
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-slate-200 hover:bg-slate-700 transition-colors"
+                    className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-200 hover:bg-[#1f2738] transition-colors"
                   >
                     <MoveHorizontal className="w-3.5 h-3.5 text-sky-400" />
-                    <span>Kutuyu Değiştir</span>
+                    <span>Move Box</span>
                   </button>
                   <button
                     onClick={() => {
                       setMenuOpen(false)
                       onDelete(item)
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-rose-400 hover:bg-rose-950/40 transition-colors border-t border-slate-700/50"
+                    className="w-full flex items-center gap-2 px-3 py-1.5 text-rose-400 hover:bg-rose-950/40 transition-colors border-t border-[#232b3d]"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
-                    <span>Sil</span>
+                    <span>Delete</span>
                   </button>
                 </div>
               </>
@@ -158,25 +163,25 @@ export const ItemCard: FC<ItemCardProps> = ({
         </div>
 
         {item.notes && (
-          <p className="text-xs text-slate-400 mt-1 line-clamp-1 italic">
-            "{item.notes}"
+          <p className="text-[11px] font-mono text-slate-400 mt-1 line-clamp-1 text-slate-400">
+            // {item.notes}
           </p>
         )}
 
-        {/* Quantity Controls */}
-        <div className="mt-3 flex items-center justify-between gap-2 pt-2 border-t border-slate-800/80">
-          <span className="text-xs text-slate-400">Adet / Stok:</span>
-          <div className="flex items-center gap-1.5 bg-slate-950 border border-slate-800 rounded-lg p-0.5">
+        {/* Tactile Quantity Stepper */}
+        <div className="mt-2.5 flex items-center justify-between gap-2 pt-2 border-t border-[#1e2536]">
+          <span className="text-[11px] font-mono text-slate-500 uppercase">Stock:</span>
+          <div className="flex items-center bg-[#0b0e14] border border-[#22293b] rounded p-0.5">
             <button
               onClick={() => onUpdateQuantity(item.id, -1)}
               disabled={item.quantity <= 0}
-              className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
-              title="1 Azalt"
+              className="btn-tactile w-6 h-6 flex items-center justify-center rounded text-slate-400 hover:text-white hover:bg-[#181f2c] disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+              title="Decrease by 1"
             >
-              <Minus className="w-3.5 h-3.5" />
+              <Minus className="w-3 h-3" />
             </button>
             <span
-              className={`min-w-[32px] text-center font-mono text-xs font-semibold px-1 ${
+              className={`min-w-[28px] text-center font-mono text-xs font-semibold px-1 tabular-nums ${
                 item.quantity === 0
                   ? 'text-rose-400'
                   : item.quantity <= 2
@@ -188,10 +193,10 @@ export const ItemCard: FC<ItemCardProps> = ({
             </span>
             <button
               onClick={() => onUpdateQuantity(item.id, 1)}
-              className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-              title="1 Arttır"
+              className="btn-tactile w-6 h-6 flex items-center justify-center rounded text-slate-400 hover:text-white hover:bg-[#181f2c] transition-colors"
+              title="Increase by 1"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-3 h-3" />
             </button>
           </div>
         </div>

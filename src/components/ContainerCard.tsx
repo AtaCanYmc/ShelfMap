@@ -35,76 +35,74 @@ export const ContainerCard: FC<ContainerCardProps> = ({
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <div className="group relative bg-slate-900 border border-slate-800 hover:border-indigo-600/50 rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-indigo-950/30 flex flex-col">
-      {/* Cover Image or Fallback */}
+    <div className="group relative bg-[#121622] border border-[#232a3b] hover:border-[#3b4764] rounded-xl overflow-hidden transition-colors flex flex-col">
+      {/* Cover Image or Technical Grid */}
       <div
         onClick={() => onOpen(container.id)}
-        className="relative aspect-[16/10] w-full bg-slate-950 cursor-pointer overflow-hidden"
+        className="relative aspect-[16/10] w-full bg-[#0b0e14] cursor-pointer overflow-hidden border-b border-[#1f2638]"
       >
         {container.image_url ? (
           <img
             src={container.image_url}
             alt={container.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-cover transition-opacity hover:opacity-90"
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 via-slate-950 to-indigo-950/40 text-slate-700 group-hover:text-indigo-400 transition-colors">
-            <FolderOpen className="w-12 h-12 stroke-[1.5]" />
+          <div className="w-full h-full flex flex-col items-center justify-center bg-tech-grid text-slate-700 group-hover:text-slate-500 transition-colors">
+            <FolderOpen className="w-9 h-9 stroke-[1.5]" />
           </div>
         )}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-black/20" />
-
         {/* Badges on image */}
-        <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5">
+        <div className="absolute top-2 left-2 flex flex-wrap gap-1 font-mono">
           {subContainerCount > 0 && (
-            <span className="flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-900/80 backdrop-blur-md text-sky-400 border border-sky-900/50 shadow-sm">
-              <Layers className="w-3 h-3" />
-              <span>{subContainerCount} alt kutu</span>
+            <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-[#0b0e14]/90 text-sky-400 border border-[#232b3d]">
+              <Layers className="w-2.5 h-2.5" />
+              <span>{subContainerCount}</span>
             </span>
           )}
           {itemCount > 0 && (
-            <span className="flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-900/80 backdrop-blur-md text-emerald-400 border border-emerald-900/50 shadow-sm">
-              <Box className="w-3 h-3" />
-              <span>{itemCount} parça</span>
+            <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-[#0b0e14]/90 text-amber-400 border border-[#232b3d]">
+              <Box className="w-2.5 h-2.5" />
+              <span>{itemCount}</span>
             </span>
           )}
         </div>
 
-        {/* Quick QR button */}
+        {/* Quick QR print button */}
         <button
           onClick={(e) => {
             e.stopPropagation()
             onPrintQr(container)
           }}
-          title="QR Kodu Görüntüle & Yazdır"
-          className="absolute top-2.5 right-2.5 p-1.5 rounded-lg bg-slate-900/80 backdrop-blur-md text-slate-300 hover:text-white hover:bg-slate-800 transition-colors border border-slate-700/50"
+          title="View & Print QR Label"
+          className="btn-tactile absolute top-2 right-2 p-1.5 rounded bg-[#0b0e14]/90 text-slate-400 hover:text-white border border-[#232b3d] transition-colors"
         >
-          <QrCode className="w-4 h-4" />
+          <QrCode className="w-3.5 h-3.5" />
         </button>
       </div>
 
       {/* Card Body */}
-      <div className="p-4 flex-1 flex flex-col justify-between">
+      <div className="p-3.5 flex-1 flex flex-col justify-between">
         <div onClick={() => onOpen(container.id)} className="cursor-pointer">
-          <h3 className="font-semibold text-slate-100 text-base group-hover:text-indigo-400 transition-colors line-clamp-1">
+          <h3 className="font-semibold text-slate-100 text-sm group-hover:text-amber-400 transition-colors line-clamp-1">
             {container.name}
           </h3>
           {container.description && (
-            <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
               {container.description}
             </p>
           )}
         </div>
 
         {/* Footer Actions */}
-        <div className="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+        <div className="mt-3 pt-2.5 border-t border-[#1e2536] flex items-center justify-between text-xs text-slate-400">
           <button
             onClick={() => onOpen(container.id)}
-            className="flex items-center gap-1.5 text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
+            className="flex items-center gap-1 text-sky-400 hover:text-sky-300 font-medium font-mono text-xs transition-colors"
           >
-            <span>İçeriği Aç</span>
+            <span>OPEN</span>
             <span className="text-sm">→</span>
           </button>
 
@@ -112,9 +110,9 @@ export const ContainerCard: FC<ContainerCardProps> = ({
           <div className="relative">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors"
+              className="p-1 rounded hover:bg-[#1a2130] text-slate-500 hover:text-slate-200 transition-colors"
             >
-              <MoreVertical className="w-4 h-4" />
+              <MoreVertical className="w-3.5 h-3.5" />
             </button>
 
             {menuOpen && (
@@ -123,46 +121,46 @@ export const ContainerCard: FC<ContainerCardProps> = ({
                   className="fixed inset-0 z-40"
                   onClick={() => setMenuOpen(false)}
                 />
-                <div className="absolute right-0 bottom-full mb-1 w-40 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-50 py-1 text-xs animate-in fade-in">
+                <div className="absolute right-0 bottom-full mb-1 w-40 bg-[#141924] border border-[#293245] rounded-lg shadow-xl z-50 py-1 text-xs font-sans">
                   <button
                     onClick={() => {
                       setMenuOpen(false)
                       onEdit(container)
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-slate-200 hover:bg-slate-700 transition-colors"
+                    className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-200 hover:bg-[#1f2738] transition-colors"
                   >
-                    <Edit2 className="w-3.5 h-3.5 text-indigo-400" />
-                    <span>Düzenle</span>
+                    <Edit2 className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Edit</span>
                   </button>
                   <button
                     onClick={() => {
                       setMenuOpen(false)
                       onMove(container)
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-slate-200 hover:bg-slate-700 transition-colors"
+                    className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-200 hover:bg-[#1f2738] transition-colors"
                   >
                     <MoveHorizontal className="w-3.5 h-3.5 text-sky-400" />
-                    <span>Konumunu Değiştir</span>
+                    <span>Move Location</span>
                   </button>
                   <button
                     onClick={() => {
                       setMenuOpen(false)
                       onPrintQr(container)
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-slate-200 hover:bg-slate-700 transition-colors"
+                    className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-200 hover:bg-[#1f2738] transition-colors"
                   >
-                    <QrCode className="w-3.5 h-3.5 text-purple-400" />
-                    <span>QR Etiketi Yazdır</span>
+                    <QrCode className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Print QR Label</span>
                   </button>
                   <button
                     onClick={() => {
                       setMenuOpen(false)
                       onDelete(container)
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-rose-400 hover:bg-rose-950/40 transition-colors border-t border-slate-700/50"
+                    className="w-full flex items-center gap-2 px-3 py-1.5 text-rose-400 hover:bg-rose-950/40 transition-colors border-t border-[#232b3d]"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
-                    <span>Sil</span>
+                    <span>Delete</span>
                   </button>
                 </div>
               </>
