@@ -167,13 +167,13 @@ export const ItemCard: FC<ItemCardProps> = ({
 
         {/* Tactile Quantity Stepper */}
         <div className="mt-2.5 flex items-center justify-between gap-2 pt-2 border-t border-slate-200 dark:border-[#1e2536]">
-          <span className="text-[11px] font-mono text-slate-500 uppercase">Stock:</span>
+          <span className="text-[11px] font-mono text-slate-500 uppercase">{t('stockLabel')}</span>
           <div className="flex items-center bg-slate-100 dark:bg-[#0b0e14] border border-slate-300 dark:border-[#22293b] rounded p-0.5">
             <button
               onClick={() => onUpdateQuantity(item.id, -1)}
               disabled={item.quantity <= 0}
               className="btn-tactile w-7 h-7 flex items-center justify-center rounded text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#181f2c] disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
-              title="Decrease by 1"
+              title={t('decreaseQuantity')}
             >
               <Minus className="w-3.5 h-3.5" />
             </button>
@@ -191,7 +191,7 @@ export const ItemCard: FC<ItemCardProps> = ({
             <button
               onClick={() => onUpdateQuantity(item.id, 1)}
               className="btn-tactile w-7 h-7 flex items-center justify-center rounded text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#181f2c] transition-colors"
-              title="Increase by 1"
+              title={t('increaseQuantity')}
             >
               <Plus className="w-3.5 h-3.5" />
             </button>

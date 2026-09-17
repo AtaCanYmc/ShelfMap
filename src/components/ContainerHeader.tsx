@@ -85,7 +85,7 @@ export const ContainerHeader: FC<ContainerHeaderProps> = ({
                 {lowStockCount > 0 && <AlertTriangle className="w-3.5 h-3.5 text-amber-500 shrink-0" />}
                 <span>{lowStockCount}</span>
               </div>
-              <div className="text-[10px] text-slate-500 uppercase">Alert</div>
+              <div className="text-[10px] text-slate-500 uppercase">{t('stockAlert')}</div>
             </div>
           </div>
         </div>
@@ -140,7 +140,7 @@ export const ContainerHeader: FC<ContainerHeaderProps> = ({
               <div>
                 <div className="flex items-center gap-2 flex-wrap mb-1 font-mono">
                   <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-sky-100 dark:bg-[#181f2c] text-sky-500 dark:text-sky-400 border border-sky-200 dark:border-[#27334a]">
-                    CONTAINER
+                    {t('containerBadge')}
                   </span>
                   {currentContainer.qr_code && (
                     <button
