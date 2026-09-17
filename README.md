@@ -1,8 +1,8 @@
 # ShelfMap
 
-[![Deploy ShelfMap to GitHub Pages](https://github.com/atacan/ShelfMap/actions/workflows/deploy.yml/badge.svg)](https://github.com/atacan/ShelfMap/actions/workflows/deploy.yml)
-[![Release Please](https://github.com/atacan/ShelfMap/actions/workflows/release-please.yml/badge.svg)](https://github.com/atacan/ShelfMap/actions/workflows/release-please.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Deploy ShelfMap to GitHub Pages](https://github.com/AtaCanYmc/ShelfMap/actions/workflows/deploy.yml/badge.svg)](https://github.com/AtaCanYmc/ShelfMap/actions/workflows/deploy.yml)
+[![Release Please](https://github.com/AtaCanYmc/ShelfMap/actions/workflows/release-please.yml/badge.svg)](https://github.com/AtaCanYmc/ShelfMap/actions/workflows/release-please.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 Hierarchical workshop and home storage mapping Progressive Web App (PWA) built for makers, electronics hobbyists, and developers. Organizes parts, boards, tools, and hardware across nested physical containers using a Bring-Your-Own-Supabase (BYOS) architecture, printable QR code labels, and live camera scanning.
 
@@ -96,7 +96,7 @@ flowchart TD
 
 ```bash
 # Clone the repository
-git clone https://github.com/atacan/ShelfMap.git
+git clone https://github.com/AtaCanYmc/ShelfMap.git
 cd ShelfMap
 
 # Install dependencies
@@ -184,4 +184,4 @@ npm run build
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [Apache-2.0 License](LICENSE) © 2026 Ata Can Yaymacı ([@AtaCanYmc](https://github.com/AtaCanYmc)).
