@@ -33,7 +33,7 @@ export const Navbar: FC<NavbarProps> = ({
   const [addMenuOpen, setAddMenuOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-30 bg-[#0e121a]/95 dark:bg-[#0e121a]/95 bg-white/95 backdrop-blur border-b border-[#222838] dark:border-[#222838] border-slate-200 transition-colors">
+    <header className="sticky top-0 z-30 bg-white/95 dark:bg-[#0e121a]/95 backdrop-blur border-b border-slate-200 dark:border-[#222838] transition-colors">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 flex items-center justify-between gap-2 sm:gap-3">
         {/* Brand */}
         <button

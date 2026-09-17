@@ -166,8 +166,34 @@ function ShelfMapContent() {
     }
   }
 
+  useEffect(() => {
+    // Sync initial theme
+    const pref = (localStorage.getItem('shelfmap_theme') as 'system' | 'dark' | 'light') || 'system'
+    const resolveAndApply = () => {
+      let eff = pref
+      if (pref === 'system') {
+        eff = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+      }
+      document.documentElement.setAttribute('data-theme', eff)
+      if (eff === 'dark') {
+        document.documentElement.classList.add('dark')
+        document.documentElement.classList.remove('light')
+      } else {
+        document.documentElement.classList.add('light')
+        document.documentElement.classList.remove('dark')
+      }
+    }
+    resolveAndApply()
+
+    if (pref === 'system' && window.matchMedia) {
+      const mq = window.matchMedia('(prefers-color-scheme: light)')
+      mq.addEventListener('change', resolveAndApply)
+      return () => mq.removeEventListener('change', resolveAndApply)
+    }
+  }, [])
+
   return (
-    <div className="min-h-screen bg-[#0c0f14] dark:bg-[#0c0f14] bg-[#f4f6f9] text-slate-100 dark:text-slate-100 text-slate-900 flex flex-col selection:bg-amber-500 selection:text-black font-sans pb-20 md:pb-6 transition-colors">
+    <div className="min-h-screen bg-[#f4f6f9] dark:bg-[#0c0f14] text-slate-900 dark:text-slate-100 flex flex-col selection:bg-amber-500 selection:text-black font-sans pb-20 md:pb-6 transition-colors">
       {/* Top Navigation */}
       <Navbar
         config={config}

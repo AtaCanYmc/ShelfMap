@@ -14,7 +14,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test:core": "tsx src/services/db.test.ts && tsx src/services/i18n.test.ts",
+    "test:core": "tsx src/services/db.test.ts && tsx src/services/i18n.test.ts && tsx src/services/theme.test.ts",
     "prepare": "husky"
   },
   "dependencies": {

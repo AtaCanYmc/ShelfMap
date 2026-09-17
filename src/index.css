@@ -6,6 +6,8 @@
 
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
+
 :root,
 html[data-theme="dark"],
 .dark {

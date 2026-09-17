@@ -30,7 +30,7 @@ export const MobileBottomBar: FC<MobileBottomBarProps> = ({
   return (
     <nav
       aria-label="Mobile Navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0e121a]/95 dark:bg-[#0e121a]/95 bg-white/95 backdrop-blur border-t border-[#232a3c] dark:border-[#232a3c] border-slate-200 shadow-2xl"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0e121a]/95 backdrop-blur border-t border-slate-200 dark:border-[#232a3c] shadow-2xl transition-colors"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
       <div className="flex items-center justify-around h-14 px-2 max-w-lg mx-auto">

@@ -135,6 +135,8 @@ export const translations = {
     
     // Preferences Tab
     appearanceTitle: 'Appearance & Theme',
+    themeSystem: 'System Default',
+    themeSystemDesc: 'Follow device operating system appearance',
     themeDark: 'Dark Mode',
     themeDarkDesc: 'Carbon workshop with amber tool accents',
     themeLight: 'Light Mode',
@@ -323,6 +325,8 @@ export const translations = {
     
     // Preferences Tab
     appearanceTitle: 'Görünüm & Tema',
+    themeSystem: 'Sistem Varsayılanı',
+    themeSystemDesc: 'Cihaz işletim sistemi temasını takip et',
     themeDark: 'Karanlık Mod',
     themeDarkDesc: 'Amber takım vurgularıyla karbon atölye teması',
     themeLight: 'Aydınlık Mod',
@@ -511,6 +515,8 @@ export const translations = {
     
     // Preferences Tab
     appearanceTitle: 'Erscheinungsbild & Design',
+    themeSystem: 'Systemstandard',
+    themeSystemDesc: 'Aussehen an das Betriebssystem anpassen',
     themeDark: 'Dunkelmodus',
     themeDarkDesc: 'Carbon-Werkstatt mit bernsteinfarbenen Werkzeug-Akzenten',
     themeLight: 'Hellmodus',
@@ -699,6 +705,8 @@ export const translations = {
     
     // Preferences Tab
     appearanceTitle: 'Apparence & Thème',
+    themeSystem: 'Système par Défaut',
+    themeSystemDesc: 'Suivre l\'apparence du système d\'exploitation',
     themeDark: 'Mode Sombre',
     themeDarkDesc: 'Atelier carbone avec accents ambrés',
     themeLight: 'Mode Clair',
@@ -887,6 +895,8 @@ export const translations = {
     
     // Preferences Tab
     appearanceTitle: 'Apariencia y Tema',
+    themeSystem: 'Predeterminado del Sistema',
+    themeSystemDesc: 'Seguir la apariencia del sistema operativo',
     themeDark: 'Modo Oscuro',
     themeDarkDesc: 'Taller de carbono con acentos ámbar',
     themeLight: 'Modo Claro',
