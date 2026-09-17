@@ -40,14 +40,14 @@ export const Navbar: FC<NavbarProps> = ({
           onClick={onGoHome}
           className="flex items-center gap-2 sm:gap-2.5 text-left group focus:outline-none shrink-0 min-h-[44px]"
         >
-          <div className="w-8 h-8 rounded bg-[#161c28] dark:bg-[#161c28] bg-amber-50 border border-[#2d364a] dark:border-[#2d364a] border-amber-300 flex items-center justify-center text-amber-500 group-hover:border-amber-500 transition-colors">
+          <div className="w-8 h-8 rounded bg-amber-50 dark:bg-[#161c28] border border-amber-300 dark:border-[#2d364a] flex items-center justify-center text-amber-500 group-hover:border-amber-500 transition-colors">
             <Layers className="w-4 h-4 stroke-[2]" />
           </div>
           <div className="flex items-baseline gap-1.5">
-            <span className="font-bold tracking-tight text-white dark:text-white text-slate-900 text-sm sm:text-base font-mono">
+            <span className="font-bold tracking-tight text-slate-900 dark:text-white text-sm sm:text-base font-mono">
               SHELFMAP
             </span>
-            <span className="hidden sm:inline-block text-[10px] font-mono text-slate-500 font-medium px-1 py-0.2 rounded bg-[#161c28] dark:bg-[#161c28] bg-slate-100 border border-[#232a3b] dark:border-[#232a3b] border-slate-300">
+            <span className="hidden sm:inline-block text-[10px] font-mono text-slate-500 font-medium px-1 py-0.2 rounded bg-slate-100 dark:bg-[#161c28] border border-slate-300 dark:border-[#232a3b]">
               v0.1
             </span>
           </div>
@@ -57,13 +57,13 @@ export const Navbar: FC<NavbarProps> = ({
         <div className="flex-1 max-w-md mx-1 sm:mx-2">
           <button
             onClick={onOpenSearch}
-            className="w-full min-h-[40px] flex items-center justify-between px-3 py-1.5 rounded-lg bg-[#121620] dark:bg-[#121620] bg-slate-100 border border-[#232a3b] dark:border-[#232a3b] border-slate-300 hover:border-amber-500/50 text-slate-400 hover:text-slate-200 dark:hover:text-slate-200 text-slate-600 hover:text-slate-900 text-xs transition-colors"
+            className="w-full min-h-[40px] flex items-center justify-between px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#121620] border border-slate-300 dark:border-[#232a3b] hover:border-amber-500/50 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 text-xs transition-colors"
           >
             <div className="flex items-center gap-2 truncate">
               <Search className="w-3.5 h-3.5 text-slate-500 shrink-0" />
               <span className="truncate">{t('searchPrompt')}</span>
             </div>
-            <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-[#1a202c] dark:bg-[#1a202c] bg-slate-200 border border-[#2d364a] dark:border-[#2d364a] border-slate-300 rounded">
+            <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-slate-200 dark:bg-[#1a202c] border border-slate-300 dark:border-[#2d364a] rounded">
               /
             </kbd>
           </button>
@@ -75,7 +75,7 @@ export const Navbar: FC<NavbarProps> = ({
           <button
             onClick={onOpenScanner}
             title={t('qrScannerTitle')}
-            className="hidden md:inline-flex btn-tactile p-2 rounded-lg bg-[#141924] dark:bg-[#141924] bg-slate-100 hover:bg-[#1a202e] dark:hover:bg-[#1a202e] hover:bg-slate-200 text-slate-300 dark:text-slate-300 text-slate-700 hover:text-white dark:hover:text-white border border-[#242b3c] dark:border-[#242b3c] border-slate-300 transition-colors min-w-[40px] min-h-[40px] items-center justify-center"
+            className="hidden md:inline-flex btn-tactile p-2 rounded-lg bg-slate-100 dark:bg-[#141924] hover:bg-slate-200 dark:hover:bg-[#1a202e] text-slate-700 dark:text-slate-300 hover:text-white dark:hover:text-white border border-slate-300 dark:border-[#242b3c] transition-colors min-w-[40px] min-h-[40px] items-center justify-center"
           >
             <QrCode className="w-4 h-4 text-sky-400" />
           </button>
@@ -96,13 +96,13 @@ export const Navbar: FC<NavbarProps> = ({
                   className="fixed inset-0 z-40"
                   onClick={() => setAddMenuOpen(false)}
                 />
-                <div className="absolute right-0 mt-2 w-52 bg-[#131722] dark:bg-[#131722] bg-white border border-[#252c3d] dark:border-[#252c3d] border-slate-300 rounded-xl shadow-xl z-50 py-1 text-xs">
+                <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-[#131722] border border-slate-300 dark:border-[#252c3d] rounded-xl shadow-xl z-50 py-1 text-xs">
                   <button
                     onClick={() => {
                       setAddMenuOpen(false)
                       onNewContainer()
                     }}
-                    className="w-full flex items-center gap-2.5 px-3 py-2.5 text-slate-200 dark:text-slate-200 text-slate-700 hover:bg-[#1c2232] dark:hover:bg-[#1c2232] hover:bg-slate-100 hover:text-white dark:hover:text-white hover:text-slate-900 transition-colors"
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#1c2232] hover:text-slate-900 dark:hover:text-white transition-colors"
                   >
                     <Layers className="w-4 h-4 text-amber-500" />
                     <span>{t('newContainer')}</span>
@@ -112,7 +112,7 @@ export const Navbar: FC<NavbarProps> = ({
                       setAddMenuOpen(false)
                       onNewItem()
                     }}
-                    className="w-full flex items-center gap-2.5 px-3 py-2.5 text-slate-200 dark:text-slate-200 text-slate-700 hover:bg-[#1c2232] dark:hover:bg-[#1c2232] hover:bg-slate-100 hover:text-white dark:hover:text-white hover:text-slate-900 transition-colors"
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#1c2232] hover:text-slate-900 dark:hover:text-white transition-colors"
                   >
                     <Box className="w-4 h-4 text-sky-400" />
                     <span>{t('newItem')}</span>
@@ -126,7 +126,7 @@ export const Navbar: FC<NavbarProps> = ({
           <button
             onClick={onOpenSettings}
             title={t('settingsTitle')}
-            className="btn-tactile flex items-center gap-1.5 py-2 px-2.5 rounded-lg bg-[#141924] dark:bg-[#141924] bg-slate-100 hover:bg-[#1a202e] dark:hover:bg-[#1a202e] hover:bg-slate-200 text-slate-300 dark:text-slate-300 text-slate-700 hover:text-white dark:hover:text-white border border-[#242b3c] dark:border-[#242b3c] border-slate-300 text-xs transition-colors min-h-[40px]"
+            className="btn-tactile flex items-center gap-1.5 py-2 px-2.5 rounded-lg bg-slate-100 dark:bg-[#141924] hover:bg-slate-200 dark:hover:bg-[#1a202e] text-slate-700 dark:text-slate-300 hover:text-white dark:hover:text-white border border-slate-300 dark:border-[#242b3c] text-xs transition-colors min-h-[40px]"
           >
             <span
               className={`w-2 h-2 rounded-full shrink-0 ${
@@ -135,10 +135,10 @@ export const Navbar: FC<NavbarProps> = ({
                   : 'bg-amber-400'
               }`}
             />
-            <span className="hidden md:inline font-mono text-[11px] text-slate-400 dark:text-slate-400 text-slate-600">
+            <span className="hidden md:inline font-mono text-[11px] text-slate-600 dark:text-slate-400">
               {config.isConfigured && !config.useDemoMode ? t('byosOnline') : t('localDemo')}
             </span>
-            <Settings className="w-3.5 h-3.5 text-slate-400 dark:text-slate-400 text-slate-600 ml-0.5" />
+            <Settings className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400 ml-0.5" />
           </button>
         </div>
       </div>

@@ -171,23 +171,23 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-      <div className="relative w-full max-w-md bg-[#11151f] dark:bg-[#11151f] bg-white border border-[#232a3c] dark:border-[#232a3c] border-slate-300 rounded-xl shadow-2xl overflow-hidden my-6 transition-colors">
+      <div className="relative w-full max-w-md bg-white dark:bg-[#11151f] border border-slate-300 dark:border-[#232a3c] rounded-xl shadow-2xl overflow-hidden my-6 transition-colors">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#232a3c] dark:border-[#232a3c] border-slate-200 bg-[#0c0f14] dark:bg-[#0c0f14] bg-slate-50">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 dark:border-[#232a3c] bg-slate-50 dark:bg-[#0c0f14]">
           <div className="flex items-center gap-2.5">
-            <div className="p-1.5 rounded bg-[#1a2234] dark:bg-[#1a2234] bg-amber-100 border border-[#2d3a56] dark:border-[#2d3a56] border-amber-300 text-amber-500">
+            <div className="p-1.5 rounded bg-amber-100 dark:bg-[#1a2234] border border-amber-300 dark:border-[#2d3a56] text-amber-500">
               <Camera className="w-4 h-4" />
             </div>
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-slate-400 dark:text-slate-400 text-slate-500 font-semibold">
+              <div className="font-mono text-[10px] uppercase tracking-widest text-slate-500 dark:text-slate-400 font-semibold">
                 {t('dockScan')}
               </div>
-              <h3 className="font-semibold text-white dark:text-white text-slate-900 text-sm">{t('qrScannerTitle')}</h3>
+              <h3 className="font-semibold text-slate-900 dark:text-white text-sm">{t('qrScannerTitle')}</h3>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded text-slate-400 hover:text-white dark:hover:text-white text-slate-500 hover:text-slate-900 hover:bg-[#1a2234] dark:hover:bg-[#1a2234] hover:bg-slate-200 transition-colors"
+            className="p-1.5 rounded text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#1a2234] transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -196,7 +196,7 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
         {/* Content */}
         <div className="p-5">
           {/* Camera View Area with HUD corner reticles */}
-          <div className="relative rounded-lg overflow-hidden bg-[#07090d] border border-[#232a3c] dark:border-[#232a3c] border-slate-700 aspect-square flex items-center justify-center shadow-inner">
+          <div className="relative rounded-lg overflow-hidden bg-[#07090d] border border-slate-700 dark:border-[#232a3c] aspect-square flex items-center justify-center shadow-inner">
             <div id={scannerContainerId} className="w-full h-full" />
 
             {/* Target reticle overlay if active */}
@@ -217,22 +217,22 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
 
           {/* Scanned Result Card */}
           {matchedContainer && (
-            <div className="mt-4 p-4 rounded-lg bg-[#141b2b] dark:bg-[#141b2b] bg-amber-50/70 border border-amber-500 shadow-lg animate-in fade-in">
+            <div className="mt-4 p-4 rounded-lg bg-amber-50/70 dark:bg-[#141b2b] border border-amber-500 shadow-lg animate-in fade-in">
               <div className="flex items-center justify-between text-amber-500 text-[11px] font-mono font-semibold uppercase tracking-wider mb-1.5">
                 <div className="flex items-center gap-1.5">
                   <Layers className="w-3.5 h-3.5" />
                   <span>{t('containerIdentified')}</span>
                 </div>
                 {scannedCode && (
-                  <span className="font-mono text-[10px] text-slate-400 dark:text-slate-400 text-slate-600 truncate max-w-[140px]">
+                  <span className="font-mono text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[140px]">
                     {scannedCode}
                   </span>
                 )}
               </div>
-              <h4 className="text-base font-bold text-white dark:text-white text-slate-900 mb-1">
+              <h4 className="text-base font-bold text-slate-900 dark:text-white mb-1">
                 {matchedContainer.name}
               </h4>
-              <p className="text-xs font-mono text-slate-400 dark:text-slate-400 text-slate-600 mb-3 truncate">
+              <p className="text-xs font-mono text-slate-600 dark:text-slate-400 mb-3 truncate">
                 {containerPath.map((p) => p.name).join(' / ')}
               </p>
 
@@ -252,7 +252,7 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
                     onQuickAddItem(matchedContainer.id)
                     onClose()
                   }}
-                  className="flex items-center justify-center gap-1.5 px-3.5 py-2 bg-[#1a2234] dark:bg-[#1a2234] bg-white hover:bg-[#232d45] dark:hover:bg-[#232d45] hover:bg-slate-100 text-slate-200 dark:text-slate-200 text-slate-800 border border-[#2e3b57] dark:border-[#2e3b57] border-slate-300 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors min-h-[40px]"
+                  className="flex items-center justify-center gap-1.5 px-3.5 py-2 bg-white dark:bg-[#1a2234] hover:bg-slate-100 dark:hover:bg-[#232d45] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-[#2e3b57] rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors min-h-[40px]"
                   title={t('addItemBtn')}
                 >
                   <Plus className="w-3.5 h-3.5 text-emerald-500" />
@@ -264,24 +264,24 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
 
           {/* Error Message */}
           {errorMsg && !matchedContainer && (
-            <div className="mt-3 p-3 rounded-lg bg-[#2a1315] dark:bg-[#2a1315] bg-rose-50 border border-[#7f1d1d] dark:border-[#7f1d1d] border-rose-300 text-[#fca5a5] dark:text-[#fca5a5] text-rose-800 text-xs font-mono flex items-start gap-2">
+            <div className="mt-3 p-3 rounded-lg bg-rose-50 dark:bg-[#2a1315] border border-rose-300 dark:border-[#7f1d1d] text-rose-800 dark:text-[#fca5a5] text-xs font-mono flex items-start gap-2">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
               <div>{errorMsg}</div>
             </div>
           )}
 
           {/* Fallback Tools (Manual entry & Image file scan) */}
-          <div className="mt-4 pt-3 border-t border-[#232a3c] dark:border-[#232a3c] border-slate-200 flex items-center justify-between text-xs font-mono">
+          <div className="mt-4 pt-3 border-t border-slate-200 dark:border-[#232a3c] flex items-center justify-between text-xs font-mono">
             <button
               type="button"
               onClick={() => setShowManual(!showManual)}
-              className="flex items-center gap-1.5 text-slate-400 dark:text-slate-400 text-slate-600 hover:text-white dark:hover:text-white hover:text-slate-900 transition-colors py-1.5"
+              className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors py-1.5"
             >
               <Keyboard className="w-3.5 h-3.5 text-amber-500" />
               <span>{showManual ? t('returnToCamera') : t('manualInput')}</span>
             </button>
 
-            <label className="flex items-center gap-1.5 text-slate-400 dark:text-slate-400 text-slate-600 hover:text-white dark:hover:text-white hover:text-slate-900 cursor-pointer transition-colors py-1.5">
+            <label className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer transition-colors py-1.5">
               <Upload className="w-3.5 h-3.5 text-sky-400" />
               <span>{t('scanFile')}</span>
               <input
@@ -300,7 +300,7 @@ export const QrScannerModal: FC<QrScannerModalProps> = ({
                 placeholder={t('manualPlaceholder')}
                 value={manualCode}
                 onChange={(e) => setManualCode(e.target.value)}
-                className="flex-1 px-3 py-2 bg-[#0c0f14] dark:bg-[#0c0f14] bg-slate-50 border border-[#232a3c] dark:border-[#232a3c] border-slate-300 focus:border-amber-500 rounded-lg text-xs font-mono text-slate-200 dark:text-slate-200 text-slate-900 placeholder-slate-500 outline-none"
+                className="flex-1 px-3 py-2 bg-slate-50 dark:bg-[#0c0f14] border border-slate-300 dark:border-[#232a3c] focus:border-amber-500 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-200 placeholder-slate-500 outline-none"
               />
               <button
                 type="submit"

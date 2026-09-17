@@ -37,7 +37,7 @@ export const MobileBottomBar: FC<MobileBottomBarProps> = ({
         {/* 1. Home / Root */}
         <button
           onClick={onGoHome}
-          className="btn-tactile flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-slate-400 hover:text-white dark:hover:text-white text-slate-600 dark:text-slate-400 transition-colors"
+          className="btn-tactile flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
         >
           <Layers className="w-4 h-4 mb-0.5 text-amber-500" />
           <span className="text-[10px] font-mono uppercase tracking-tight">{t('dockHome')}</span>
@@ -46,7 +46,7 @@ export const MobileBottomBar: FC<MobileBottomBarProps> = ({
         {/* 2. Search */}
         <button
           onClick={onOpenSearch}
-          className="btn-tactile flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-slate-400 hover:text-white dark:hover:text-white text-slate-600 dark:text-slate-400 transition-colors"
+          className="btn-tactile flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
         >
           <Search className="w-4 h-4 mb-0.5 text-slate-400" />
           <span className="text-[10px] font-mono uppercase tracking-tight">{t('dockSearch')}</span>
@@ -57,7 +57,7 @@ export const MobileBottomBar: FC<MobileBottomBarProps> = ({
           <button
             onClick={onOpenScanner}
             aria-label={t('dockScan')}
-            className="btn-tactile flex items-center justify-center w-11 h-11 -mt-4 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 shadow-lg shadow-sky-500/20 border-2 border-[#0e121a] dark:border-[#0e121a] border-white transition-transform active:scale-95"
+            className="btn-tactile flex items-center justify-center w-11 h-11 -mt-4 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 shadow-lg shadow-sky-500/20 border-2 border-white dark:border-[#0e121a] transition-transform active:scale-95"
           >
             <QrCode className="w-5 h-5 stroke-[2.2]" />
           </button>
@@ -66,7 +66,7 @@ export const MobileBottomBar: FC<MobileBottomBarProps> = ({
         {/* 4. Add Action */}
         <button
           onClick={onQuickAdd}
-          className="btn-tactile flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-slate-400 hover:text-white dark:hover:text-white text-slate-600 dark:text-slate-400 transition-colors"
+          className="btn-tactile flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
         >
           <Plus className="w-4 h-4 mb-0.5 text-amber-500 stroke-[2.5]" />
           <span className="text-[10px] font-mono uppercase tracking-tight">{t('dockAdd')}</span>
@@ -75,7 +75,7 @@ export const MobileBottomBar: FC<MobileBottomBarProps> = ({
         {/* 5. Settings with Cloud status indicator */}
         <button
           onClick={onOpenSettings}
-          className="btn-tactile flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-slate-400 hover:text-white dark:hover:text-white text-slate-600 dark:text-slate-400 transition-colors relative"
+          className="btn-tactile flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors relative"
         >
           <div className="relative">
             <Settings className="w-4 h-4 mb-0.5" />

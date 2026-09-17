@@ -77,23 +77,23 @@ export const QrPrintModal: FC<QrPrintModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
-      <div className="relative w-full max-w-lg bg-[#11151f] dark:bg-[#11151f] bg-white border border-[#232a3c] dark:border-[#232a3c] border-slate-300 rounded-xl shadow-2xl overflow-hidden my-6 no-print transition-colors">
+      <div className="relative w-full max-w-lg bg-white dark:bg-[#11151f] border border-slate-300 dark:border-[#232a3c] rounded-xl shadow-2xl overflow-hidden my-6 no-print transition-colors">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#232a3c] dark:border-[#232a3c] border-slate-200 bg-[#0c0f14] dark:bg-[#0c0f14] bg-slate-50">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 dark:border-[#232a3c] bg-slate-50 dark:bg-[#0c0f14]">
           <div className="flex items-center gap-2.5">
-            <div className="p-1.5 rounded bg-[#1a2234] dark:bg-[#1a2234] bg-amber-100 border border-[#2d3a56] dark:border-[#2d3a56] border-amber-300 text-amber-500">
+            <div className="p-1.5 rounded bg-amber-100 dark:bg-[#1a2234] border border-amber-300 dark:border-[#2d3a56] text-amber-500">
               <QrCode className="w-4 h-4" />
             </div>
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-slate-400 dark:text-slate-400 text-slate-500 font-semibold">
+              <div className="font-mono text-[10px] uppercase tracking-widest text-slate-500 dark:text-slate-400 font-semibold">
                 {t('printLabelsTitle')}
               </div>
-              <h3 className="font-semibold text-white dark:text-white text-slate-900 text-sm">{container.name}</h3>
+              <h3 className="font-semibold text-slate-900 dark:text-white text-sm">{container.name}</h3>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded text-slate-400 hover:text-white dark:hover:text-white text-slate-500 hover:text-slate-900 hover:bg-[#1a2234] dark:hover:bg-[#1a2234] hover:bg-slate-200 transition-colors"
+            className="p-1.5 rounded text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#1a2234] transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -102,10 +102,10 @@ export const QrPrintModal: FC<QrPrintModalProps> = ({
         {/* Content */}
         <div className="p-5 space-y-4">
           {/* Batch toggle */}
-          <div className="flex items-center justify-between p-3 rounded-lg bg-[#0c0f14] dark:bg-[#0c0f14] bg-slate-50 border border-[#232a3c] dark:border-[#232a3c] border-slate-200 text-xs font-mono">
+          <div className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-[#0c0f14] border border-slate-200 dark:border-[#232a3c] text-xs font-mono">
             <div className="flex items-center gap-2">
               <Layers className="w-4 h-4 text-amber-500" />
-              <span className="text-slate-300 dark:text-slate-300 text-slate-700">
+              <span className="text-slate-700 dark:text-slate-300">
                 {t('includeSubBins')} ({allContainers.filter((c) => c.parent_id === container.id).length} {t('nestedBinsCount')})
               </span>
             </div>
@@ -159,8 +159,8 @@ export const QrPrintModal: FC<QrPrintModalProps> = ({
           </div>
 
           {/* Quick Copy URI */}
-          <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-[#0c0f14] dark:bg-[#0c0f14] bg-slate-50 border border-[#232a3c] dark:border-[#232a3c] border-slate-200 text-xs font-mono">
-            <span className="text-slate-400 dark:text-slate-400 text-slate-600 truncate text-[11px]">
+          <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-slate-50 dark:bg-[#0c0f14] border border-slate-200 dark:border-[#232a3c] text-xs font-mono">
+            <span className="text-slate-600 dark:text-slate-400 truncate text-[11px]">
               {container.qr_code || `shelfmap://c/${container.id}`}
             </span>
             <button
@@ -174,11 +174,11 @@ export const QrPrintModal: FC<QrPrintModalProps> = ({
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#232a3c] dark:border-[#232a3c] border-slate-200">
+          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-200 dark:border-[#232a3c]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-mono text-slate-400 hover:text-white dark:hover:text-white text-slate-600 hover:text-slate-900 transition-colors min-h-[38px]"
+              className="px-4 py-2 text-xs font-mono text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors min-h-[38px]"
             >
               {t('close')}
             </button>

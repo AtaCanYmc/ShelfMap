@@ -29,14 +29,14 @@ export const ItemList: FC<ItemListProps> = ({
 
   if (items.length === 0) {
     return (
-      <div className="bg-[#10141d]/60 dark:bg-[#10141d]/60 bg-white/60 border border-dashed border-[#222838] dark:border-[#222838] border-slate-300 rounded-xl p-8 text-center flex flex-col items-center justify-center">
-        <div className="w-10 h-10 rounded-lg bg-[#161c28] dark:bg-[#161c28] bg-slate-100 border border-[#273248] dark:border-[#273248] border-slate-300 flex items-center justify-center text-slate-400 mb-2.5">
+      <div className="bg-white/60 dark:bg-[#10141d]/60 border border-dashed border-slate-300 dark:border-[#222838] rounded-xl p-8 text-center flex flex-col items-center justify-center">
+        <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-[#161c28] border border-slate-300 dark:border-[#273248] flex items-center justify-center text-slate-400 mb-2.5">
           <Box className="w-5 h-5 stroke-[1.5] text-amber-500" />
         </div>
-        <h4 className="text-sm font-semibold text-slate-200 dark:text-slate-200 text-slate-800">
+        <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">
           {containerName ? `${t('itemsInContainer')} "${containerName}"` : t('unassignedItems')}
         </h4>
-        <p className="text-xs text-slate-400 dark:text-slate-400 text-slate-600 mt-1 max-w-sm leading-relaxed">
+        <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 max-w-sm leading-relaxed">
           {t('noItemsHere')}
         </p>
         <button

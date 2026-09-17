@@ -63,9 +63,9 @@ export const SearchView: FC<SearchViewProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md overflow-y-auto">
-      <div className="relative w-full max-w-2xl bg-[#11151f] dark:bg-[#11151f] bg-white border border-[#232a3c] dark:border-[#232a3c] border-slate-300 rounded-xl shadow-2xl overflow-hidden my-6 transition-colors">
+      <div className="relative w-full max-w-2xl bg-white dark:bg-[#11151f] border border-slate-300 dark:border-[#232a3c] rounded-xl shadow-2xl overflow-hidden my-6 transition-colors">
         {/* Search Input Bar */}
-        <div className="p-4 border-b border-[#232a3c] dark:border-[#232a3c] border-slate-200 flex items-center gap-3 bg-[#0c0f14] dark:bg-[#0c0f14] bg-slate-50">
+        <div className="p-4 border-b border-slate-200 dark:border-[#232a3c] flex items-center gap-3 bg-slate-50 dark:bg-[#0c0f14]">
           <Search className="w-5 h-5 text-amber-500 shrink-0" />
           <input
             type="text"
@@ -73,26 +73,26 @@ export const SearchView: FC<SearchViewProps> = ({
             placeholder={t('searchPlaceholderFull')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="flex-1 bg-transparent border-none text-slate-100 dark:text-slate-100 text-slate-900 placeholder-slate-500 text-sm font-mono outline-none focus:ring-0"
+            className="flex-1 bg-transparent border-none text-slate-900 dark:text-slate-100 placeholder-slate-500 text-sm font-mono outline-none focus:ring-0"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="p-1.5 rounded text-slate-400 hover:text-white dark:hover:text-white text-slate-500 hover:text-slate-900 hover:bg-[#1a2234] dark:hover:bg-[#1a2234] hover:bg-slate-200 transition-colors"
+              className="p-1.5 rounded text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#1a2234] transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
           )}
           <button
             onClick={onClose}
-            className="px-2.5 py-1.5 rounded bg-[#1a2234] dark:bg-[#1a2234] bg-slate-200 hover:bg-[#232d45] dark:hover:bg-[#232d45] hover:bg-slate-300 text-slate-300 dark:text-slate-300 text-slate-700 text-xs font-mono transition-colors"
+            className="px-2.5 py-1.5 rounded bg-slate-200 dark:bg-[#1a2234] hover:bg-slate-300 dark:hover:bg-[#232d45] text-slate-700 dark:text-slate-300 text-xs font-mono transition-colors"
           >
             ESC
           </button>
         </div>
 
         {/* Category Pills */}
-        <div className="flex items-center gap-1.5 px-4 py-2.5 overflow-x-auto border-b border-[#232a3c] dark:border-[#232a3c] border-slate-200 scrollbar-none bg-[#0e121b] dark:bg-[#0e121b] bg-slate-100">
+        <div className="flex items-center gap-1.5 px-4 py-2.5 overflow-x-auto border-b border-slate-200 dark:border-[#232a3c] scrollbar-none bg-slate-100 dark:bg-[#0e121b]">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -100,7 +100,7 @@ export const SearchView: FC<SearchViewProps> = ({
               className={`text-[11px] font-mono uppercase px-2.5 py-1 rounded border transition-colors shrink-0 ${
                 selectedCategory === cat
                   ? 'bg-amber-500/15 border-amber-500 text-amber-500 font-semibold'
-                  : 'bg-[#141a29] dark:bg-[#141a29] bg-white border-[#232d42] dark:border-[#232d42] border-slate-300 text-slate-400 dark:text-slate-400 text-slate-600 hover:text-slate-900'
+                  : 'bg-white dark:bg-[#141a29] border-slate-300 dark:border-[#232d42] text-slate-600 dark:text-slate-400 hover:text-slate-900'
               }`}
             >
               {cat === 'all' ? t('allCategories') : categoryName(cat)}
@@ -127,7 +127,7 @@ export const SearchView: FC<SearchViewProps> = ({
               {/* Items Section */}
               {matchedItems.length > 0 && (
                 <div className="space-y-2">
-                  <div className="text-[10px] font-mono font-bold text-slate-400 dark:text-slate-400 text-slate-500 uppercase tracking-widest px-1">
+                  <div className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">
                     {t('itemsAndParts')} ({matchedItems.length})
                   </div>
                   {matchedItems.map(({ item, path, containerName: cName }) => {
@@ -138,11 +138,11 @@ export const SearchView: FC<SearchViewProps> = ({
                       <div
                         key={item.id}
                         onClick={() => handleSelect(item.container_id)}
-                        className="group p-3 rounded-lg bg-[#0c0f14] dark:bg-[#0c0f14] bg-slate-50 border border-[#232a3c] dark:border-[#232a3c] border-slate-200 hover:border-amber-500 hover:bg-[#141b2b] dark:hover:bg-[#141b2b] hover:bg-amber-50/50 cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[44px]"
+                        className="group p-3 rounded-lg bg-slate-50 dark:bg-[#0c0f14] border border-slate-200 dark:border-[#232a3c] hover:border-amber-500 hover:bg-amber-50/50 dark:hover:bg-[#141b2b] cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[44px]"
                       >
                         <div className="flex items-center gap-3 min-w-0">
                           {/* Image / Icon */}
-                          <div className="w-10 h-10 rounded bg-[#11151f] dark:bg-[#11151f] bg-slate-100 border border-[#232a3c] dark:border-[#232a3c] border-slate-300 flex items-center justify-center shrink-0 overflow-hidden">
+                          <div className="w-10 h-10 rounded bg-slate-100 dark:bg-[#11151f] border border-slate-300 dark:border-[#232a3c] flex items-center justify-center shrink-0 overflow-hidden">
                             {item.image_url ? (
                               <img
                                 src={item.image_url}
@@ -157,7 +157,7 @@ export const SearchView: FC<SearchViewProps> = ({
                           {/* Info & Path */}
                           <div className="min-w-0">
                             <div className="flex items-center gap-2 mb-0.5">
-                              <h5 className="font-semibold text-slate-100 dark:text-slate-100 text-slate-900 text-sm group-hover:text-amber-500 transition-colors truncate">
+                              <h5 className="font-semibold text-slate-900 dark:text-slate-100 text-sm group-hover:text-amber-500 transition-colors truncate">
                                 {item.name}
                               </h5>
                               <span
@@ -165,13 +165,13 @@ export const SearchView: FC<SearchViewProps> = ({
                               >
                                 {categoryName(item.category)}
                               </span>
-                              <span className="text-[11px] font-mono tabular-nums text-slate-400 dark:text-slate-400 text-slate-600">
+                              <span className="text-[11px] font-mono tabular-nums text-slate-600 dark:text-slate-400">
                                 ×{item.quantity}
                               </span>
                             </div>
 
                             {/* Full Breadcrumb Path */}
-                            <div className="flex items-center gap-1 text-xs font-mono text-slate-400 dark:text-slate-400 text-slate-600 truncate">
+                            <div className="flex items-center gap-1 text-xs font-mono text-slate-600 dark:text-slate-400 truncate">
                               <span className="text-slate-500 font-semibold uppercase text-[10px]">{t('location')}:</span>
                               {path.length === 0 ? (
                                 <span className="italic">
@@ -208,32 +208,32 @@ export const SearchView: FC<SearchViewProps> = ({
 
               {/* Containers Section */}
               {selectedCategory === 'all' && matchedContainers.length > 0 && (
-                <div className="space-y-2 mt-4 pt-4 border-t border-[#232a3c] dark:border-[#232a3c] border-slate-200">
-                  <div className="text-[10px] font-mono font-bold text-slate-400 dark:text-slate-400 text-slate-500 uppercase tracking-widest px-1">
+                <div className="space-y-2 mt-4 pt-4 border-t border-slate-200 dark:border-[#232a3c]">
+                  <div className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">
                     {t('containersAndBins')} ({matchedContainers.length})
                   </div>
                   {matchedContainers.map(({ container, path, itemCount, childCount }) => (
                     <div
                       key={container.id}
                       onClick={() => handleSelect(container.id)}
-                      className="group p-3 rounded-lg bg-[#0c0f14] dark:bg-[#0c0f14] bg-slate-50 border border-[#232a3c] dark:border-[#232a3c] border-slate-200 hover:border-amber-500 hover:bg-[#141b2b] dark:hover:bg-[#141b2b] hover:bg-amber-50/50 cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[44px]"
+                      className="group p-3 rounded-lg bg-slate-50 dark:bg-[#0c0f14] border border-slate-200 dark:border-[#232a3c] hover:border-amber-500 hover:bg-amber-50/50 dark:hover:bg-[#141b2b] cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[44px]"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-10 h-10 rounded bg-[#182338] dark:bg-[#182338] bg-amber-100 border border-[#2d3a56] dark:border-[#2d3a56] border-amber-300 flex items-center justify-center shrink-0">
+                        <div className="w-10 h-10 rounded bg-amber-100 dark:bg-[#182338] border border-amber-300 dark:border-[#2d3a56] flex items-center justify-center shrink-0">
                           <Layers className="w-4 h-4 text-amber-500" />
                         </div>
 
                         <div className="min-w-0">
                           <div className="flex items-center gap-2 mb-0.5">
-                            <h5 className="font-semibold text-slate-100 dark:text-slate-100 text-slate-900 text-sm group-hover:text-amber-500 transition-colors truncate">
+                            <h5 className="font-semibold text-slate-900 dark:text-slate-100 text-sm group-hover:text-amber-500 transition-colors truncate">
                               {container.name}
                             </h5>
-                            <span className="text-[10px] font-mono tabular-nums text-slate-400 dark:text-slate-400 text-slate-600">
+                            <span className="text-[10px] font-mono tabular-nums text-slate-600 dark:text-slate-400">
                               ({childCount} {t('nestedBinsCount')}, {itemCount} {t('itemsCount')})
                             </span>
                           </div>
 
-                          <div className="flex items-center gap-1 text-xs font-mono text-slate-400 dark:text-slate-400 text-slate-600 truncate">
+                          <div className="flex items-center gap-1 text-xs font-mono text-slate-600 dark:text-slate-400 truncate">
                             <span className="text-slate-500 font-semibold uppercase text-[10px]">{t('path')}:</span>
                             {path.map((node, i) => (
                               <Fragment key={node.id}>

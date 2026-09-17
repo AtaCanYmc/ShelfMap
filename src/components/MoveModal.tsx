@@ -55,25 +55,25 @@ export const MoveModal: FC<MoveModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-md bg-[#11151f] dark:bg-[#11151f] bg-white border border-[#232a3c] dark:border-[#232a3c] border-slate-300 rounded-xl shadow-2xl overflow-hidden my-8 transition-colors">
+      <div className="relative w-full max-w-md bg-white dark:bg-[#11151f] border border-slate-300 dark:border-[#232a3c] rounded-xl shadow-2xl overflow-hidden my-8 transition-colors">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#232a3c] dark:border-[#232a3c] border-slate-200 bg-[#0c0f14] dark:bg-[#0c0f14] bg-slate-50">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 dark:border-[#232a3c] bg-slate-50 dark:bg-[#0c0f14]">
           <div className="flex items-center gap-2.5">
-            <div className="p-1.5 rounded bg-[#1a2234] dark:bg-[#1a2234] bg-amber-100 border border-[#2d3a56] dark:border-[#2d3a56] border-amber-300 text-amber-500">
+            <div className="p-1.5 rounded bg-amber-100 dark:bg-[#1a2234] border border-amber-300 dark:border-[#2d3a56] text-amber-500">
               <MoveHorizontal className="w-4 h-4" />
             </div>
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-slate-400 dark:text-slate-400 text-slate-500 font-semibold">
+              <div className="font-mono text-[10px] uppercase tracking-widest text-slate-500 dark:text-slate-400 font-semibold">
                 {t('move')}
               </div>
-              <h3 className="font-semibold text-white dark:text-white text-slate-900 text-sm truncate max-w-[260px]">
+              <h3 className="font-semibold text-slate-900 dark:text-white text-sm truncate max-w-[260px]">
                 {title}
               </h3>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded text-slate-400 hover:text-white dark:hover:text-white text-slate-500 hover:text-slate-900 hover:bg-[#1a2234] dark:hover:bg-[#1a2234] hover:bg-slate-200 transition-colors"
+            className="p-1.5 rounded text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#1a2234] transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -82,13 +82,13 @@ export const MoveModal: FC<MoveModalProps> = ({
         {/* Content */}
         <div className="p-5 space-y-4">
           {error && (
-            <div className="p-3 rounded bg-rose-950/60 dark:bg-rose-950/60 bg-rose-50 border border-rose-800 dark:border-rose-800 border-rose-300 text-rose-400 dark:text-rose-300 text-rose-800 text-xs font-mono">
+            <div className="p-3 rounded bg-rose-50 dark:bg-rose-950/60 border border-rose-300 dark:border-rose-800 text-rose-400 dark:text-rose-300 text-rose-800 text-xs font-mono">
               ERR: {error}
             </div>
           )}
 
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-300 dark:text-slate-300 text-slate-700 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
               {t('selectDestination')}:
             </span>
             <span className="font-mono text-[11px] text-slate-500 tabular-nums">
@@ -103,8 +103,8 @@ export const MoveModal: FC<MoveModalProps> = ({
               onClick={() => setSelectedId(null)}
               className={`w-full text-left px-3.5 py-2.5 rounded-lg border transition-all flex items-center justify-between ${
                 selectedId === null
-                  ? 'bg-[#182338] dark:bg-[#182338] bg-amber-500/10 border-amber-500 text-amber-500 font-medium'
-                  : 'bg-[#0c0f14] dark:bg-[#0c0f14] bg-slate-50 border-[#232a3c] dark:border-[#232a3c] border-slate-200 text-slate-300 dark:text-slate-300 text-slate-700 hover:border-slate-400'
+                  ? 'bg-amber-500/10 dark:bg-[#182338] border-amber-500 text-amber-500 font-medium'
+                  : 'bg-slate-50 dark:bg-[#0c0f14] border-slate-200 dark:border-[#232a3c] text-slate-700 dark:text-slate-300 hover:border-slate-400'
               }`}
             >
               <div className="flex items-center gap-2">
@@ -127,12 +127,12 @@ export const MoveModal: FC<MoveModalProps> = ({
                   onClick={() => setSelectedId(c.id)}
                   className={`w-full text-left px-3.5 py-2.5 rounded-lg border transition-all flex items-center justify-between ${
                     isSelected
-                      ? 'bg-[#182338] dark:bg-[#182338] bg-amber-500/10 border-amber-500 text-amber-500 font-medium'
-                      : 'bg-[#0c0f14] dark:bg-[#0c0f14] bg-slate-50 border-[#232a3c] dark:border-[#232a3c] border-slate-200 text-slate-300 dark:text-slate-300 text-slate-700 hover:border-slate-400'
+                      ? 'bg-amber-500/10 dark:bg-[#182338] border-amber-500 text-amber-500 font-medium'
+                      : 'bg-slate-50 dark:bg-[#0c0f14] border-slate-200 dark:border-[#232a3c] text-slate-700 dark:text-slate-300 hover:border-slate-400'
                   }`}
                 >
                   <div className="truncate pr-2">
-                    <div className="font-semibold text-slate-200 dark:text-slate-200 text-slate-800">{c.name}</div>
+                    <div className="font-semibold text-slate-800 dark:text-slate-200">{c.name}</div>
                     <div className="text-[10px] text-slate-500 truncate">{pathString}</div>
                   </div>
                   {isSelected && <Check className="w-4 h-4 text-amber-500 shrink-0" />}
@@ -142,11 +142,11 @@ export const MoveModal: FC<MoveModalProps> = ({
           </div>
 
           {/* Submit */}
-          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#232a3c] dark:border-[#232a3c] border-slate-200">
+          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-200 dark:border-[#232a3c]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-mono text-slate-400 hover:text-white dark:hover:text-white text-slate-600 hover:text-slate-900 transition-colors min-h-[38px]"
+              className="px-4 py-2 text-xs font-mono text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors min-h-[38px]"
             >
               {t('cancel')}
             </button>

@@ -215,7 +215,7 @@ function ShelfMapContent() {
       <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4">
         {/* BYOS Banner / Notice if running on demo local storage */}
         {config.useDemoMode && !config.isConfigured && (
-          <div className="mb-4 p-3 rounded-lg bg-[#11151f] dark:bg-[#11151f] bg-white border border-[#232a3c] dark:border-[#232a3c] border-slate-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs text-slate-300 dark:text-slate-300 text-slate-700 font-mono shadow-sm">
+          <div className="mb-4 p-3 rounded-lg bg-white dark:bg-[#11151f] border border-slate-300 dark:border-[#232a3c] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs text-slate-700 dark:text-slate-300 font-mono shadow-sm">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
               <span>
@@ -277,7 +277,7 @@ function ShelfMapContent() {
             {/* Section 1: Child Containers / Boxes */}
             <section className="mb-8">
               <div className="flex items-center justify-between mb-3 px-1">
-                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-slate-400 dark:text-slate-400 text-slate-600">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-slate-600 dark:text-slate-400">
                   {currentContainer ? t('subContainers') : t('primaryLocations')} ({subContainers.length})
                 </h3>
               </div>
@@ -311,7 +311,7 @@ function ShelfMapContent() {
             {/* Section 2: Items in this container */}
             <section className="mb-12">
               <div className="flex items-center justify-between mb-3 px-1">
-                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-slate-400 dark:text-slate-400 text-slate-600">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-slate-600 dark:text-slate-400">
                   {currentContainer
                     ? `${t('itemsInContainer')} "${currentContainer.name}"`
                     : t('unassignedItems')}{' '}
