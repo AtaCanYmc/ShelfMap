@@ -1,8 +1,16 @@
+<div align="center">
+
+<img src="./public/assets/shelfmap-banner.jpg" alt="ShelfMap - Smart Workshop & Component Inventory Map" width="100%" />
+
 # ShelfMap
+
+**Hierarchical Workshop & Electronics Inventory Map (BYOS + PWA)**
 
 [![Deploy ShelfMap to GitHub Pages](https://github.com/AtaCanYmc/ShelfMap/actions/workflows/deploy.yml/badge.svg)](https://github.com/AtaCanYmc/ShelfMap/actions/workflows/deploy.yml)
 [![Release Please](https://github.com/AtaCanYmc/ShelfMap/actions/workflows/release-please.yml/badge.svg)](https://github.com/AtaCanYmc/ShelfMap/actions/workflows/release-please.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
+</div>
 
 Hierarchical workshop and home storage mapping Progressive Web App (PWA) built for makers, electronics hobbyists, and developers. Organizes parts, boards, tools, and hardware across nested physical containers using a Bring-Your-Own-Supabase (BYOS) architecture, printable QR code labels, and live camera scanning.
 
