@@ -106,6 +106,32 @@ Projede modern açık kaynak DevOps standartları yapılandırılmıştır:
 4. **Husky Pre-commit Kontrolleri** (`.husky/pre-commit`):
    - Her `git commit` öncesinde çekirdek algoritma testlerini ve TypeScript derlemesini otomatik çalıştırır. Hatalı kodların repoya commit edilmesini engeller.
 
+5. **Vercel Deployment** (`vercel.json`):
+   - SPA URL yönlendirmeleri (`rewrites`), PWA Service Worker için önbellek kontrol başlıkları (`sw.js` revalidation) ve statik asset optimizasyonu (`immutable cache`) yapılandırılmıştır.
+
+---
+
+## ⚡ Vercel ile Canlıya Alma
+
+ShelfMap'i Vercel üzerinde tek tıkla veya CLI ile sıfır konfigürasyonla yayınlayabilirsiniz:
+
+### Yöntem 1: Vercel Dashboard
+1. Projenizi GitHub'a push'layın.
+2. [Vercel Dashboard](https://vercel.com/new) üzerinden repoyu seçip import edin.
+3. Ayarlar otomatik algılanır:
+   - **Framework Preset**: Vite
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+4. **Deploy** butonuna basın!
+
+### Yöntem 2: Vercel CLI
+```bash
+# Vercel CLI ile hızlı dağıtım
+npx vercel --prod
+```
+
+Projedeki [vercel.json](file:///Users/atacan/WebstormProjects/ShelfMap/vercel.json) dosyası PWA Service Worker (`sw.js`), Web App Manifest ve SPA router başlıklarını otomatik yönetir.
+
 ---
 
 ## 📦 Lisans
