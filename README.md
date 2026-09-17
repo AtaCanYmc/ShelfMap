@@ -88,5 +88,25 @@ npm run build       # Üretim derlemesi ve TypeScript doğrulaması
 
 ---
 
+## 🛠️ CI/CD, Otomasyon & Kalite Güvencesi
+
+Projede modern açık kaynak DevOps standartları yapılandırılmıştır:
+
+1. **GitHub Pages CI/CD** (`.github/workflows/deploy.yml`):
+   - `main` dalına yapılan her push'ta veya manuel tetiklemede testleri (`npm run test:core`) ve üretimi (`npm run build`) çalıştırır, PWA çıktısını GitHub Pages'e otomatik dağıtır.
+   - `vite.config.ts` içindeki `base: './'` ayarı sayesinde GitHub Pages alt yollarında (`/<repo-adı>/`) kırık link olmadan sorunsuz çalışır.
+
+2. **Dependabot** (`.github/dependabot.yml`):
+   - Hem `npm` bağımlılıklarını hem de `github-actions` versiyonlarını haftalık olarak denetler ve otomatik güncelleme PR'ları açar.
+
+3. **Release Please** (`.github/workflows/release-please.yml`, `release-please-config.json`):
+   - [Conventional Commits](https://www.conventionalcommits.org/) formatındaki commit'leri takip eder.
+   - Otomatik Changelog oluşturur, sürüm yükseltir (`package.json` ve tag) ve GitHub Release yayınlar.
+
+4. **Husky Pre-commit Kontrolleri** (`.husky/pre-commit`):
+   - Her `git commit` öncesinde çekirdek algoritma testlerini ve TypeScript derlemesini otomatik çalıştırır. Hatalı kodların repoya commit edilmesini engeller.
+
+---
+
 ## 📦 Lisans
 MIT License.
