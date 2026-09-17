@@ -13,6 +13,7 @@ import {
   getContainerPath
 } from './services/db'
 import { getSupabaseConfig } from './services/supabaseClient'
+import { I18nProvider, useI18n } from './services/i18n'
 import { Navbar } from './components/Navbar'
 import { Breadcrumbs } from './components/Breadcrumbs'
 import { ContainerHeader } from './components/ContainerHeader'
@@ -26,9 +27,11 @@ import { QrPrintModal } from './components/QrPrintModal'
 import { SettingsModal } from './components/SettingsModal'
 import { SearchView } from './components/SearchView'
 import { ImagePreviewModal } from './components/ImagePreviewModal'
+import { MobileBottomBar } from './components/MobileBottomBar'
 import { Loader2, Database, Sparkles } from 'lucide-react'
 
-export function App() {
+function ShelfMapContent() {
+  const { t } = useI18n()
   const [containers, setContainers] = useState<Container[]>([])
   const [items, setItems] = useState<Item[]>([])
   const [currentContainerId, setCurrentContainerId] = useState<string | null>(null)
@@ -75,7 +78,7 @@ export function App() {
     loadData()
   }, [loadData])
 
-  // Global keyboard shortcuts: / for search, Escape for closing modals
+  // Global keyboard shortcuts: / for search
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (
@@ -111,7 +114,7 @@ export function App() {
   }
 
   const handleDeleteItem = async (item: Item) => {
-    if (confirm(`Are you sure you want to delete item "${item.name}"?`)) {
+    if (confirm(`${t('confirmDeleteItem')} "${item.name}"?`)) {
       await deleteItem(item.id)
       setItems((prev) => prev.filter((i) => i.id !== item.id))
     }
@@ -140,8 +143,8 @@ export function App() {
     const subCount = containers.filter((c) => c.parent_id === container.id).length
     const itemCount = items.filter((i) => i.container_id === container.id).length
     const promptMsg = subCount > 0 || itemCount > 0
-      ? `Delete "${container.name}" along with ${subCount} nested containers and ${itemCount} items?`
-      : `Are you sure you want to delete container "${container.name}"?`
+      ? `${t('confirmDeleteContainer')} "${container.name}" ${t('confirmDeleteContainerSub')}`
+      : `${t('confirmDeleteContainer')} "${container.name}"?`
 
     if (confirm(promptMsg)) {
       await deleteContainer(container.id)
@@ -164,7 +167,7 @@ export function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0c0f14] text-slate-100 flex flex-col selection:bg-amber-500 selection:text-black font-sans">
+    <div className="min-h-screen bg-[#0c0f14] dark:bg-[#0c0f14] bg-[#f4f6f9] text-slate-100 dark:text-slate-100 text-slate-900 flex flex-col selection:bg-amber-500 selection:text-black font-sans pb-20 md:pb-6 transition-colors">
       {/* Top Navigation */}
       <Navbar
         config={config}
@@ -186,19 +189,19 @@ export function App() {
       <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4">
         {/* BYOS Banner / Notice if running on demo local storage */}
         {config.useDemoMode && !config.isConfigured && (
-          <div className="mb-4 p-3 rounded-lg bg-[#11151f] border border-[#232a3c] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs text-slate-300 font-mono">
+          <div className="mb-4 p-3 rounded-lg bg-[#11151f] dark:bg-[#11151f] bg-white border border-[#232a3c] dark:border-[#232a3c] border-slate-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs text-slate-300 dark:text-slate-300 text-slate-700 font-mono shadow-sm">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+              <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
               <span>
-                <strong className="text-amber-400">LOCAL OFFLINE STORAGE:</strong> Inventory is saved locally in browser storage. Connect your personal Supabase instance to enable cross-device cloud sync.
+                <strong className="text-amber-500">{t('demoBannerTitle')}</strong> {t('demoBannerDesc')}
               </span>
             </div>
             <button
               onClick={() => setIsSettingsOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-semibold uppercase tracking-wider text-[11px] shrink-0 transition-colors shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-semibold uppercase tracking-wider text-[11px] shrink-0 transition-colors shadow-sm min-h-[36px]"
             >
               <Database className="w-3.5 h-3.5 text-black" />
-              <span>Connect Supabase</span>
+              <span>{t('connectSupabaseBtn')}</span>
             </button>
           </div>
         )}
@@ -213,8 +216,8 @@ export function App() {
 
         {loading ? (
           <div className="py-24 flex flex-col items-center justify-center text-slate-400 font-mono">
-            <Loader2 className="w-8 h-8 animate-spin text-amber-400 mb-3" />
-            <p className="text-xs uppercase tracking-widest text-slate-400">Loading workshop inventory...</p>
+            <Loader2 className="w-8 h-8 animate-spin text-amber-500 mb-3" />
+            <p className="text-xs uppercase tracking-widest text-slate-500">{t('loading')}</p>
           </div>
         ) : (
           <>
@@ -248,8 +251,8 @@ export function App() {
             {/* Section 1: Child Containers / Boxes */}
             <section className="mb-8">
               <div className="flex items-center justify-between mb-3 px-1">
-                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-slate-400">
-                  {currentContainer ? 'Sub-Containers & Storage Bins' : 'Primary Storage Facilities'} ({subContainers.length})
+                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-slate-400 dark:text-slate-400 text-slate-600">
+                  {currentContainer ? t('subContainers') : t('primaryLocations')} ({subContainers.length})
                 </h3>
               </div>
 
@@ -282,10 +285,10 @@ export function App() {
             {/* Section 2: Items in this container */}
             <section className="mb-12">
               <div className="flex items-center justify-between mb-3 px-1">
-                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-slate-400">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-slate-400 dark:text-slate-400 text-slate-600">
                   {currentContainer
-                    ? `Components & Items in "${currentContainer.name}"`
-                    : 'Root Level / Unassigned Items'}{' '}
+                    ? `${t('itemsInContainer')} "${currentContainer.name}"`
+                    : t('unassignedItems')}{' '}
                   ({currentItems.length})
                 </h3>
               </div>
@@ -314,6 +317,19 @@ export function App() {
           </>
         )}
       </main>
+
+      {/* Adaptive Mobile Bottom Dock Bar */}
+      <MobileBottomBar
+        onGoHome={() => setCurrentContainerId(null)}
+        onOpenSearch={() => setIsSearchOpen(true)}
+        onOpenScanner={() => setIsQrScannerOpen(true)}
+        onQuickAdd={() => {
+          setEditingItem(null)
+          setIsItemModalOpen(true)
+        }}
+        onOpenSettings={() => setIsSettingsOpen(true)}
+        hasCloudSync={Boolean(config.isConfigured && !config.useDemoMode)}
+      />
 
       {/* Modals */}
       <ItemModal
@@ -392,4 +408,13 @@ export function App() {
     </div>
   )
 }
+
+export function App() {
+  return (
+    <I18nProvider>
+      <ShelfMapContent />
+    </I18nProvider>
+  )
+}
+
 export default App

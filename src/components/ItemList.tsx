@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import type { Item } from '../types'
 import { ItemCard } from './ItemCard'
 import { Plus, Box } from 'lucide-react'
+import { useI18n } from '../services/i18n'
 
 interface ItemListProps {
   items: Item[]
@@ -24,24 +25,26 @@ export const ItemList: FC<ItemListProps> = ({
   onPreviewImage,
   onAddNew
 }) => {
+  const { t } = useI18n()
+
   if (items.length === 0) {
     return (
-      <div className="bg-[#10141d]/60 border border-dashed border-[#222838] rounded-xl p-8 text-center flex flex-col items-center justify-center">
-        <div className="w-10 h-10 rounded-lg bg-[#161c28] border border-[#273248] flex items-center justify-center text-slate-400 mb-2.5">
-          <Box className="w-5 h-5 stroke-[1.5]" />
+      <div className="bg-[#10141d]/60 dark:bg-[#10141d]/60 bg-white/60 border border-dashed border-[#222838] dark:border-[#222838] border-slate-300 rounded-xl p-8 text-center flex flex-col items-center justify-center">
+        <div className="w-10 h-10 rounded-lg bg-[#161c28] dark:bg-[#161c28] bg-slate-100 border border-[#273248] dark:border-[#273248] border-slate-300 flex items-center justify-center text-slate-400 mb-2.5">
+          <Box className="w-5 h-5 stroke-[1.5] text-amber-500" />
         </div>
-        <h4 className="text-sm font-semibold text-slate-200">
-          {containerName ? `No items inside "${containerName}"` : 'No unassigned items'}
+        <h4 className="text-sm font-semibold text-slate-200 dark:text-slate-200 text-slate-800">
+          {containerName ? `${t('itemsInContainer')} "${containerName}"` : t('unassignedItems')}
         </h4>
-        <p className="text-xs text-slate-400 mt-1 max-w-sm leading-relaxed">
-          Add electronics, boards, sensors, tools, or fasteners stored in this container.
+        <p className="text-xs text-slate-400 dark:text-slate-400 text-slate-600 mt-1 max-w-sm leading-relaxed">
+          {t('noItemsHere')}
         </p>
         <button
           onClick={onAddNew}
-          className="btn-tactile mt-3.5 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors"
+          className="btn-tactile mt-3.5 inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors min-h-[38px]"
         >
           <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-          <span>Add Component / Tool</span>
+          <span>{t('createFirstItem')}</span>
         </button>
       </div>
     )

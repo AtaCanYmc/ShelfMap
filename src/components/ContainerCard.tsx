@@ -10,6 +10,7 @@ import {
   MoveHorizontal,
   FolderOpen
 } from 'lucide-react'
+import { useI18n } from '../services/i18n'
 
 interface ContainerCardProps {
   container: Container
@@ -32,14 +33,15 @@ export const ContainerCard: FC<ContainerCardProps> = ({
   onMove,
   onPrintQr
 }) => {
+  const { t } = useI18n()
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <div className="group relative bg-[#121622] border border-[#232a3b] hover:border-[#3b4764] rounded-xl overflow-hidden transition-colors flex flex-col">
+    <div className="group relative bg-[#121622] dark:bg-[#121622] bg-white border border-[#232a3b] dark:border-[#232a3b] border-slate-200 hover:border-amber-500/50 rounded-xl overflow-hidden transition-colors flex flex-col shadow-sm">
       {/* Cover Image or Technical Grid */}
       <div
         onClick={() => onOpen(container.id)}
-        className="relative aspect-[16/10] w-full bg-[#0b0e14] cursor-pointer overflow-hidden border-b border-[#1f2638]"
+        className="relative aspect-[16/10] w-full bg-[#0b0e14] dark:bg-[#0b0e14] bg-slate-100 cursor-pointer overflow-hidden border-b border-[#1f2638] dark:border-[#1f2638] border-slate-200"
       >
         {container.image_url ? (
           <img
@@ -49,7 +51,7 @@ export const ContainerCard: FC<ContainerCardProps> = ({
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-tech-grid text-slate-700 group-hover:text-slate-500 transition-colors">
+          <div className="w-full h-full flex flex-col items-center justify-center bg-tech-grid text-slate-500 group-hover:text-amber-500 transition-colors">
             <FolderOpen className="w-9 h-9 stroke-[1.5]" />
           </div>
         )}
@@ -57,13 +59,13 @@ export const ContainerCard: FC<ContainerCardProps> = ({
         {/* Badges on image */}
         <div className="absolute top-2 left-2 flex flex-wrap gap-1 font-mono">
           {subContainerCount > 0 && (
-            <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-[#0b0e14]/90 text-sky-400 border border-[#232b3d]">
+            <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-[#0b0e14]/90 dark:bg-[#0b0e14]/90 bg-white/90 text-sky-500 dark:text-sky-400 border border-[#232b3d] dark:border-[#232b3d] border-slate-200 shadow-sm">
               <Layers className="w-2.5 h-2.5" />
               <span>{subContainerCount}</span>
             </span>
           )}
           {itemCount > 0 && (
-            <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-[#0b0e14]/90 text-amber-400 border border-[#232b3d]">
+            <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-[#0b0e14]/90 dark:bg-[#0b0e14]/90 bg-white/90 text-amber-500 border border-[#232b3d] dark:border-[#232b3d] border-slate-200 shadow-sm">
               <Box className="w-2.5 h-2.5" />
               <span>{itemCount}</span>
             </span>
@@ -76,8 +78,8 @@ export const ContainerCard: FC<ContainerCardProps> = ({
             e.stopPropagation()
             onPrintQr(container)
           }}
-          title="View & Print QR Label"
-          className="btn-tactile absolute top-2 right-2 p-1.5 rounded bg-[#0b0e14]/90 text-slate-400 hover:text-white border border-[#232b3d] transition-colors"
+          title={t('printLabelsTitle')}
+          className="btn-tactile absolute top-2 right-2 p-1.5 rounded bg-[#0b0e14]/90 dark:bg-[#0b0e14]/90 bg-white/90 text-slate-400 dark:text-slate-400 text-slate-600 hover:text-white dark:hover:text-white hover:text-slate-900 border border-[#232b3d] dark:border-[#232b3d] border-slate-200 transition-colors shadow-sm"
         >
           <QrCode className="w-3.5 h-3.5" />
         </button>
@@ -86,23 +88,23 @@ export const ContainerCard: FC<ContainerCardProps> = ({
       {/* Card Body */}
       <div className="p-3.5 flex-1 flex flex-col justify-between">
         <div onClick={() => onOpen(container.id)} className="cursor-pointer">
-          <h3 className="font-semibold text-slate-100 text-sm group-hover:text-amber-400 transition-colors line-clamp-1">
+          <h3 className="font-semibold text-slate-100 dark:text-slate-100 text-slate-900 text-sm group-hover:text-amber-500 transition-colors line-clamp-1">
             {container.name}
           </h3>
           {container.description && (
-            <p className="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+            <p className="text-xs text-slate-400 dark:text-slate-400 text-slate-600 mt-1 line-clamp-2 leading-relaxed">
               {container.description}
             </p>
           )}
         </div>
 
         {/* Footer Actions */}
-        <div className="mt-3 pt-2.5 border-t border-[#1e2536] flex items-center justify-between text-xs text-slate-400">
+        <div className="mt-3 pt-2.5 border-t border-[#1e2536] dark:border-[#1e2536] border-slate-200 flex items-center justify-between text-xs text-slate-400 dark:text-slate-400 text-slate-600">
           <button
             onClick={() => onOpen(container.id)}
-            className="flex items-center gap-1 text-sky-400 hover:text-sky-300 font-medium font-mono text-xs transition-colors"
+            className="flex items-center gap-1 text-sky-500 dark:text-sky-400 hover:text-sky-600 dark:hover:text-sky-300 font-medium font-mono text-xs transition-colors min-h-[32px]"
           >
-            <span>OPEN</span>
+            <span>{t('open').toUpperCase()}</span>
             <span className="text-sm">→</span>
           </button>
 
@@ -110,9 +112,9 @@ export const ContainerCard: FC<ContainerCardProps> = ({
           <div className="relative">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="p-1 rounded hover:bg-[#1a2130] text-slate-500 hover:text-slate-200 transition-colors"
+              className="p-1.5 rounded hover:bg-[#1a2130] dark:hover:bg-[#1a2130] hover:bg-slate-100 text-slate-500 hover:text-slate-200 dark:hover:text-slate-200 hover:text-slate-800 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
             >
-              <MoreVertical className="w-3.5 h-3.5" />
+              <MoreVertical className="w-4 h-4" />
             </button>
 
             {menuOpen && (
@@ -121,46 +123,46 @@ export const ContainerCard: FC<ContainerCardProps> = ({
                   className="fixed inset-0 z-40"
                   onClick={() => setMenuOpen(false)}
                 />
-                <div className="absolute right-0 bottom-full mb-1 w-40 bg-[#141924] border border-[#293245] rounded-lg shadow-xl z-50 py-1 text-xs font-sans">
+                <div className="absolute right-0 bottom-full mb-1 w-44 bg-[#141924] dark:bg-[#141924] bg-white border border-[#293245] dark:border-[#293245] border-slate-300 rounded-lg shadow-xl z-50 py-1 text-xs font-sans">
                   <button
                     onClick={() => {
                       setMenuOpen(false)
                       onEdit(container)
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-200 hover:bg-[#1f2738] transition-colors"
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-slate-200 dark:text-slate-200 text-slate-700 hover:bg-[#1f2738] dark:hover:bg-[#1f2738] hover:bg-slate-100 hover:text-white dark:hover:text-white hover:text-slate-900 transition-colors"
                   >
                     <Edit2 className="w-3.5 h-3.5 text-slate-400" />
-                    <span>Edit</span>
+                    <span>{t('edit')}</span>
                   </button>
                   <button
                     onClick={() => {
                       setMenuOpen(false)
                       onMove(container)
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-200 hover:bg-[#1f2738] transition-colors"
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-slate-200 dark:text-slate-200 text-slate-700 hover:bg-[#1f2738] dark:hover:bg-[#1f2738] hover:bg-slate-100 hover:text-white dark:hover:text-white hover:text-slate-900 transition-colors"
                   >
                     <MoveHorizontal className="w-3.5 h-3.5 text-sky-400" />
-                    <span>Move Location</span>
+                    <span>{t('move')}</span>
                   </button>
                   <button
                     onClick={() => {
                       setMenuOpen(false)
                       onPrintQr(container)
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-200 hover:bg-[#1f2738] transition-colors"
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-slate-200 dark:text-slate-200 text-slate-700 hover:bg-[#1f2738] dark:hover:bg-[#1f2738] hover:bg-slate-100 hover:text-white dark:hover:text-white hover:text-slate-900 transition-colors"
                   >
-                    <QrCode className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Print QR Label</span>
+                    <QrCode className="w-3.5 h-3.5 text-amber-500" />
+                    <span>{t('printLabelsTitle')}</span>
                   </button>
                   <button
                     onClick={() => {
                       setMenuOpen(false)
                       onDelete(container)
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-1.5 text-rose-400 hover:bg-rose-950/40 transition-colors border-t border-[#232b3d]"
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-rose-500 dark:text-rose-400 hover:bg-rose-950/40 dark:hover:bg-rose-950/40 hover:bg-rose-50 transition-colors border-t border-[#232b3d] dark:border-[#232b3d] border-slate-200"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
-                    <span>Delete</span>
+                    <span>{t('delete')}</span>
                   </button>
                 </div>
               </>

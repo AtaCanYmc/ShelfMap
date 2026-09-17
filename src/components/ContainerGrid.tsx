@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import type { Container, Item } from '../types'
 import { ContainerCard } from './ContainerCard'
 import { Plus, Layers } from 'lucide-react'
+import { useI18n } from '../services/i18n'
 
 interface ContainerGridProps {
   containers: Container[]
@@ -26,22 +27,21 @@ export const ContainerGrid: FC<ContainerGridProps> = ({
   onPrintQr,
   onAddNew
 }) => {
+  const { t } = useI18n()
+
   if (containers.length === 0) {
     return (
-      <div className="bg-[#10141d]/60 border border-dashed border-[#222838] rounded-xl p-8 text-center flex flex-col items-center justify-center">
-        <div className="w-10 h-10 rounded-lg bg-[#161c28] border border-[#273248] flex items-center justify-center text-slate-400 mb-2.5">
-          <Layers className="w-5 h-5 stroke-[1.5]" />
+      <div className="bg-[#10141d]/60 dark:bg-[#10141d]/60 bg-white/60 border border-dashed border-[#222838] dark:border-[#222838] border-slate-300 rounded-xl p-8 text-center flex flex-col items-center justify-center">
+        <div className="w-10 h-10 rounded-lg bg-[#161c28] dark:bg-[#161c28] bg-slate-100 border border-[#273248] dark:border-[#273248] border-slate-300 flex items-center justify-center text-slate-400 mb-2.5">
+          <Layers className="w-5 h-5 stroke-[1.5] text-amber-500" />
         </div>
-        <h4 className="text-sm font-semibold text-slate-200">No Sub-Containers Here</h4>
-        <p className="text-xs text-slate-400 mt-1 max-w-sm leading-relaxed">
-          Create a shelf, drawer, or organizer box inside this location to nest your storage.
-        </p>
+        <h4 className="text-sm font-semibold text-slate-200 dark:text-slate-200 text-slate-800">{t('noContainersHere')}</h4>
         <button
           onClick={onAddNew}
-          className="btn-tactile mt-3.5 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#181f2c] hover:bg-[#20293a] text-slate-200 hover:text-white border border-[#29354d] transition-colors"
+          className="btn-tactile mt-3.5 inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-[#181f2c] dark:bg-[#181f2c] bg-slate-100 hover:bg-[#20293a] dark:hover:bg-[#20293a] hover:bg-slate-200 text-slate-200 dark:text-slate-200 text-slate-800 border border-[#29354d] dark:border-[#29354d] border-slate-300 transition-colors min-h-[38px]"
         >
-          <Plus className="w-3.5 h-3.5 text-amber-400" />
-          <span>Add Sub-Container</span>
+          <Plus className="w-3.5 h-3.5 text-amber-500" />
+          <span>{t('createFirstContainer')}</span>
         </button>
       </div>
     )

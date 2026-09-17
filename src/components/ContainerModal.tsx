@@ -2,6 +2,7 @@ import { useState, useEffect, type FC, type FormEvent, type ChangeEvent } from '
 import type { Container } from '../types'
 import { getContainerPath, wouldCreateCycle } from '../services/db'
 import { uploadWorkshopImage } from '../services/supabaseClient'
+import { useI18n } from '../services/i18n'
 import {
   X,
   Camera,
@@ -29,6 +30,7 @@ export const ContainerModal: FC<ContainerModalProps> = ({
   currentParentId,
   allContainers
 }) => {
+  const { t } = useI18n()
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [parentId, setParentId] = useState<string | null>(null)
@@ -79,7 +81,7 @@ export const ContainerModal: FC<ContainerModalProps> = ({
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (!name.trim()) {
-      setError('Please provide a container name')
+      setError(t('containerNamePlaceholder'))
       return
     }
 
@@ -122,20 +124,20 @@ export const ContainerModal: FC<ContainerModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-lg bg-[#11151f] border border-[#232a3c] rounded-xl shadow-2xl overflow-hidden my-6">
+      <div className="relative w-full max-w-lg bg-[#11151f] dark:bg-[#11151f] bg-white border border-[#232a3c] dark:border-[#232a3c] border-slate-300 rounded-xl shadow-2xl overflow-hidden my-6 transition-colors">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#202738] bg-[#0d1017]">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#202738] dark:border-[#202738] border-slate-200 bg-[#0d1017] dark:bg-[#0d1017] bg-slate-50">
           <div className="flex items-center gap-2">
-            <div className="p-1 rounded bg-[#161c28] border border-[#273248] text-amber-400">
+            <div className="p-1.5 rounded bg-[#161c28] dark:bg-[#161c28] bg-amber-100 border border-[#273248] dark:border-[#273248] border-amber-300 text-amber-500">
               <Layers className="w-4 h-4 stroke-[2]" />
             </div>
-            <h3 className="font-semibold text-white text-sm">
-              {initialContainer ? 'Edit Container' : 'New Storage Container / Box'}
+            <h3 className="font-semibold text-white dark:text-white text-slate-900 text-sm">
+              {initialContainer ? t('editContainerTitle') : t('newContainerTitle')}
             </h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded text-slate-400 hover:text-white hover:bg-[#1c2232] transition-colors"
+            className="p-1.5 rounded text-slate-400 hover:text-white dark:hover:text-white text-slate-500 hover:text-slate-900 hover:bg-[#1c2232] dark:hover:bg-[#1c2232] hover:bg-slate-200 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -144,37 +146,37 @@ export const ContainerModal: FC<ContainerModalProps> = ({
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
           {error && (
-            <div className="p-2.5 rounded-lg bg-rose-950/40 border border-rose-800 text-rose-300 text-xs">
+            <div className="p-2.5 rounded-lg bg-rose-950/40 dark:bg-rose-950/40 bg-rose-50 border border-rose-800 dark:border-rose-800 border-rose-300 text-rose-400 dark:text-rose-300 text-rose-800 text-xs">
               {error}
             </div>
           )}
 
           {/* Name */}
           <div>
-            <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
-              Container / Location Name *
+            <label className="block text-xs font-mono uppercase text-slate-400 dark:text-slate-400 text-slate-600 mb-1">
+              {t('containerName')} *
             </label>
             <input
               type="text"
               required
-              placeholder="e.g. Lab Workbench, Metal Cabinet, Drawer 2, Tool Box"
+              placeholder={t('containerNamePlaceholder')}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 bg-[#0a0d13] border border-[#232a3c] focus:border-amber-500 rounded-lg text-xs sm:text-sm text-slate-100 placeholder-slate-600 outline-none"
+              className="w-full px-3 py-2 bg-[#0a0d13] dark:bg-[#0a0d13] bg-slate-50 border border-[#232a3c] dark:border-[#232a3c] border-slate-300 focus:border-amber-500 rounded-lg text-xs sm:text-sm text-slate-100 dark:text-slate-100 text-slate-900 placeholder-slate-500 outline-none"
             />
           </div>
 
           {/* Parent Container Selector */}
           <div>
-            <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
-              Parent Location (Nesting)
+            <label className="block text-xs font-mono uppercase text-slate-400 dark:text-slate-400 text-slate-600 mb-1">
+              {t('parentLocation')}
             </label>
             <select
               value={parentId || ''}
               onChange={(e) => setParentId(e.target.value || null)}
-              className="w-full px-3 py-2 bg-[#0a0d13] border border-[#232a3c] focus:border-amber-500 rounded-lg text-xs text-slate-100 font-mono outline-none"
+              className="w-full px-3 py-2 bg-[#0a0d13] dark:bg-[#0a0d13] bg-slate-50 border border-[#232a3c] dark:border-[#232a3c] border-slate-300 focus:border-amber-500 rounded-lg text-xs text-slate-100 dark:text-slate-100 text-slate-900 font-mono outline-none"
             >
-              <option value="">-- Root Level (Room / Workshop) --</option>
+              <option value="">-- {t('root')} --</option>
               {availableParents.map((opt) => (
                 <option key={opt.id} value={opt.id}>
                   {opt.label}
@@ -185,26 +187,26 @@ export const ContainerModal: FC<ContainerModalProps> = ({
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
-              Description (Optional)
+            <label className="block text-xs font-mono uppercase text-slate-400 dark:text-slate-400 text-slate-600 mb-1">
+              {t('containerDescription')}
             </label>
             <textarea
               rows={2}
-              placeholder="e.g. Second shelf from top in grey industrial rack..."
+              placeholder={t('containerDescPlaceholder')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3 py-2 bg-[#0a0d13] border border-[#232a3c] focus:border-amber-500 rounded-lg text-xs text-slate-100 placeholder-slate-600 outline-none resize-none font-mono"
+              className="w-full px-3 py-2 bg-[#0a0d13] dark:bg-[#0a0d13] bg-slate-50 border border-[#232a3c] dark:border-[#232a3c] border-slate-300 focus:border-amber-500 rounded-lg text-xs text-slate-100 dark:text-slate-100 text-slate-900 placeholder-slate-500 outline-none resize-none font-mono"
             />
           </div>
 
           {/* Photo Upload Section */}
           <div>
-            <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
-              Exterior Photo of Box / Shelf
+            <label className="block text-xs font-mono uppercase text-slate-400 dark:text-slate-400 text-slate-600 mb-1">
+              Exterior Photo
             </label>
 
             {imageUrl ? (
-              <div className="relative mb-2 w-full h-32 rounded-lg bg-[#0a0d13] border border-[#232a3c] overflow-hidden">
+              <div className="relative mb-2 w-full h-32 rounded-lg bg-[#0a0d13] dark:bg-[#0a0d13] bg-slate-50 border border-[#232a3c] dark:border-[#232a3c] border-slate-300 overflow-hidden">
                 <img
                   src={imageUrl}
                   alt="Preview"
@@ -213,8 +215,8 @@ export const ContainerModal: FC<ContainerModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setImageUrl('')}
-                  className="absolute top-2 right-2 p-1 rounded bg-black/80 hover:bg-rose-900 text-white transition-colors"
-                  title="Remove Image"
+                  className="absolute top-2 right-2 p-1.5 rounded bg-black/80 hover:bg-rose-900 text-white transition-colors"
+                  title={t('removePhoto')}
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -222,9 +224,9 @@ export const ContainerModal: FC<ContainerModalProps> = ({
             ) : null}
 
             <div className="flex flex-wrap items-center gap-2">
-              <label className="btn-tactile flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#141924] hover:bg-[#1c2232] text-slate-200 text-xs font-medium cursor-pointer border border-[#263146] transition-colors">
+              <label className="btn-tactile flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#141924] dark:bg-[#141924] bg-slate-100 hover:bg-[#1c2232] dark:hover:bg-[#1c2232] hover:bg-slate-200 text-slate-200 dark:text-slate-200 text-slate-800 text-xs font-medium cursor-pointer border border-[#263146] dark:border-[#263146] border-slate-300 transition-colors min-h-[38px]">
                 {uploading ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-400" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500" />
                 ) : (
                   <Camera className="w-3.5 h-3.5 text-sky-400" />
                 )}
@@ -239,8 +241,8 @@ export const ContainerModal: FC<ContainerModalProps> = ({
                 />
               </label>
 
-              <label className="btn-tactile flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#141924] hover:bg-[#1c2232] text-slate-200 text-xs font-medium cursor-pointer border border-[#263146] transition-colors">
-                <Upload className="w-3.5 h-3.5 text-emerald-400" />
+              <label className="btn-tactile flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#141924] dark:bg-[#141924] bg-slate-100 hover:bg-[#1c2232] dark:hover:bg-[#1c2232] hover:bg-slate-200 text-slate-200 dark:text-slate-200 text-slate-800 text-xs font-medium cursor-pointer border border-[#263146] dark:border-[#263146] border-slate-300 transition-colors min-h-[38px]">
+                <Upload className="w-3.5 h-3.5 text-emerald-500" />
                 <span>Gallery</span>
                 <input
                   type="file"
@@ -254,7 +256,7 @@ export const ContainerModal: FC<ContainerModalProps> = ({
               <button
                 type="button"
                 onClick={() => setShowUrlInput(!showUrlInput)}
-                className="btn-tactile flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#0a0d13] hover:bg-[#141924] text-slate-400 hover:text-slate-200 text-xs border border-[#232a3c] transition-colors"
+                className="btn-tactile flex items-center gap-1 px-3 py-2 rounded-lg bg-[#0a0d13] dark:bg-[#0a0d13] bg-slate-100 hover:bg-[#141924] dark:hover:bg-[#141924] hover:bg-slate-200 text-slate-400 dark:text-slate-400 text-slate-700 hover:text-slate-200 text-xs border border-[#232a3c] dark:border-[#232a3c] border-slate-300 transition-colors min-h-[38px]"
               >
                 <LinkIcon className="w-3.5 h-3.5" />
                 <span>URL</span>
@@ -267,44 +269,44 @@ export const ContainerModal: FC<ContainerModalProps> = ({
                 placeholder="https://... image web address"
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
-                className="mt-2 w-full px-3 py-1.5 bg-[#0a0d13] border border-[#232a3c] rounded-lg text-xs text-slate-100 placeholder-slate-600 outline-none font-mono"
+                className="mt-2 w-full px-3 py-2 bg-[#0a0d13] dark:bg-[#0a0d13] bg-slate-50 border border-[#232a3c] dark:border-[#232a3c] border-slate-300 rounded-lg text-xs text-slate-100 dark:text-slate-100 text-slate-900 placeholder-slate-500 outline-none font-mono"
               />
             )}
           </div>
 
           {/* QR Code / Physical Label Identifier */}
           <div>
-            <label className="block text-xs font-mono uppercase text-slate-400 mb-1">
-              Custom QR / Barcode ID (Optional)
+            <label className="block text-xs font-mono uppercase text-slate-400 dark:text-slate-400 text-slate-600 mb-1">
+              {t('customQrCode')}
             </label>
             <div className="relative">
               <input
                 type="text"
-                placeholder="Auto-generated if left blank"
+                placeholder={t('customQrPlaceholder')}
                 value={qrCode}
                 onChange={(e) => setQrCode(e.target.value)}
-                className="w-full pl-8 pr-3 py-2 bg-[#0a0d13] border border-[#232a3c] focus:border-amber-500 rounded-lg text-xs text-slate-100 placeholder-slate-600 outline-none font-mono"
+                className="w-full pl-8 pr-3 py-2 bg-[#0a0d13] dark:bg-[#0a0d13] bg-slate-50 border border-[#232a3c] dark:border-[#232a3c] border-slate-300 focus:border-amber-500 rounded-lg text-xs text-slate-100 dark:text-slate-100 text-slate-900 placeholder-slate-500 outline-none font-mono"
               />
               <QrCode className="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-2.5" />
             </div>
           </div>
 
           {/* Submit */}
-          <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#202738]">
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#202738] dark:border-[#202738] border-slate-200">
             <button
               type="button"
               onClick={onClose}
-              className="btn-tactile px-3.5 py-1.5 text-xs text-slate-400 hover:text-white transition-colors"
+              className="btn-tactile px-4 py-2 text-xs font-mono text-slate-400 hover:text-white dark:hover:text-white text-slate-600 hover:text-slate-900 transition-colors min-h-[38px]"
             >
-              Cancel
+              {t('cancel')}
             </button>
             <button
               type="submit"
               disabled={saving || uploading}
-              className="btn-tactile flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 text-xs font-semibold transition-colors"
+              className="btn-tactile flex items-center gap-1.5 px-5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 text-xs font-semibold uppercase tracking-wider transition-colors min-h-[38px]"
             >
               {saving && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-              <span>{initialContainer ? 'Save Changes' : 'Create Container'}</span>
+              <span>{t('saveContainerBtn')}</span>
             </button>
           </div>
         </form>
